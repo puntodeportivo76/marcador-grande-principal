@@ -9,178 +9,477 @@
 <style>
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+
 body{
-  margin:0;background:#090e16;color:#f5f6f8;
-  font-family:Arial,sans-serif
+  margin:0;
+  background:#090e16;
+  color:#f5f6f8;
+  font-family:Arial,sans-serif;
 }
+
 header{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;padding:20px;border-bottom:1px solid #293342
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:20px;
+  border-bottom:1px solid #293342;
 }
+
 .brand{font-weight:900}
 .brand b{color:#ff6500}
 main{max-width:1200px;margin:auto;padding:20px}
 h1{font-size:clamp(26px,5vw,42px)}
 h3{margin-top:0}
+
 button,.button{
-  display:inline-block;padding:13px 17px;border:1px solid #394656;
-  border-radius:10px;background:#202a37;color:white;
-  font-size:16px;text-decoration:none;cursor:pointer
+  display:inline-block;
+  padding:13px 17px;
+  border:1px solid #394656;
+  border-radius:10px;
+  background:#202a37;
+  color:white;
+  font-size:16px;
+  text-decoration:none;
+  cursor:pointer;
 }
+
 button:hover,.button:hover{background:#324155}
-button:disabled{opacity:.5;cursor:wait}
+button:disabled{opacity:.5;cursor:not-allowed}
+
 .orange{
-  background:#ff6500!important;border-color:#ff6500!important;
-  color:#160b03!important;font-weight:800
+  background:#ff6500!important;
+  border-color:#ff6500!important;
+  color:#160b03!important;
+  font-weight:800;
 }
+
 .muted{color:#a0adbf;line-height:1.5}
 .small{font-size:13px}
-.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
+
+.bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  margin:16px 0;
+}
+
 .panel{
-  background:#131c28;border:1px solid #303d4e;
-  border-radius:14px;padding:20px;margin-bottom:16px
+  background:#131c28;
+  border:1px solid #303d4e;
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:16px;
 }
+
 input,select{
-  width:100%;max-width:100%;padding:12px;
-  background:#080e17;color:white;border:1px solid #40516a;
-  border-radius:8px;font-size:16px
+  width:100%;
+  max-width:100%;
+  padding:12px;
+  background:#080e17;
+  color:white;
+  border:1px solid #40516a;
+  border-radius:8px;
+  font-size:16px;
 }
-label{display:block;margin:14px 0 7px;color:#bac5d4;font-size:13px}
+
+label{
+  display:block;
+  margin:14px 0 7px;
+  color:#bac5d4;
+  font-size:13px;
+}
+
 #home{max-width:760px;margin:30px auto}
 #status{font-size:12px;color:#b4c0d0}
 #message{min-height:24px;color:#ffbb7c;margin:12px 0}
-#controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+
+#controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-top:20px;
+}
+
 #controls .panel{margin:0;min-width:0}
 .wide{grid-column:1/-1}
+
 .points{display:flex;gap:8px;margin:16px 0}
 .points button{flex:1;padding:16px 5px;font-size:23px}
-.line{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:14px 0}
+
+.line{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin:14px 0;
+}
+
 .line button{padding:9px 16px}
 .logo-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .logo-editor{min-width:0}
+
 .preview{
-  display:block;width:90px;height:90px;object-fit:contain;
-  background:#080e17;border:1px solid #35455a;border-radius:10px;padding:6px
+  display:block;
+  width:90px;
+  height:90px;
+  object-fit:contain;
+  background:#080e17;
+  border:1px solid #35455a;
+  border-radius:10px;
+  padding:6px;
 }
+
 .possession-picker{display:flex;flex-wrap:wrap;gap:10px}
-.possession-picker button{flex:1;min-width:120px;min-height:60px;font-weight:800}
-.possession-picker button[aria-pressed=true]{
-  background:#45ff42;color:#071c08;border-color:#45ff42;
-  box-shadow:0 0 18px #45ff4233
+
+.possession-picker button{
+  flex:1;
+  min-width:120px;
+  min-height:60px;
+  font-weight:800;
 }
+
+.possession-picker button[aria-pressed=true]{
+  background:#45ff42;
+  color:#071c08;
+  border-color:#45ff42;
+  box-shadow:0 0 18px #45ff4233;
+}
+
 .saved-row{border-top:1px solid #354052;padding:15px 0}
 .saved-row strong{display:block}
 .time-inputs{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .time-inputs input{width:90px}
 
-/* Marco proporcional: la vista del teléfono se reduce completa. */
+/* Tablero proporcional: siempre se muestra completo. */
+
 .board{
-  width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;
-  background:#0b1019;border-top:5px solid #ff6500;
-  border-radius:12px;isolation:isolate
+  width:100%;
+  aspect-ratio:16/9;
+  position:relative;
+  overflow:hidden;
+  background:#0b1019;
+  border-top:5px solid #ff6500;
+  border-radius:12px;
+  isolation:isolate;
 }
+
 .stage{
-  position:absolute;width:1600px;height:900px;
-  transform-origin:top left;overflow:hidden
+  position:absolute;
+  width:1600px;
+  height:900px;
+  transform-origin:top left;
+  overflow:hidden;
 }
 
-/* Solo escudo P76, recortado del archivo existente. */
+/* Escudo nuevo P76 completo, sin banner. */
+
 .emblem{
-  position:absolute;top:35px;left:700px;
-  width:200px;height:190px;overflow:hidden
+  position:absolute;
+  top:25px;
+  left:690px;
+  width:220px;
+  height:200px;
 }
+
 .emblem img{
-  position:absolute;width:1064px;max-width:none;
-  height:auto;left:-284px;top:-92px
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
 }
 
-/* El período queda arriba y el reloj abajo. */
+/* Período superior. */
+
 .period{
-  position:absolute;top:230px;left:655px;width:290px;
-  text-align:center;padding:12px;
-  border:2px solid #ff6500;border-radius:10px;
-  font-size:34px;font-weight:800
+  position:absolute;
+  top:230px;
+  left:655px;
+  width:290px;
+  text-align:center;
+  padding:12px;
+  border:2px solid #ff6500;
+  border-radius:10px;
+  font-size:34px;
+  font-weight:800;
 }
-.team{
-  position:absolute;top:285px;width:400px;
-  text-align:center;z-index:2
-}
-.team.local{left:260px}
-.team.away{right:260px}
-.team-name{
-  height:100px;display:flex;align-items:center;justify-content:center;
-  font-size:44px;font-weight:900;line-height:1.1;
-  overflow-wrap:anywhere
-}
-.score{
-  font-size:205px;font-weight:900;line-height:1.05;
-  letter-spacing:-7px;font-variant-numeric:tabular-nums
-}
-.stats{
-  display:flex;justify-content:center;gap:45px;
-  margin-top:24px;color:#a7b5c8;font-size:23px
-}
-.stats strong{display:block;font-size:52px;color:white;margin-top:8px}
 
-/* Franjas reservadas: los logos nunca invaden los puntajes. */
+/* Logos de equipos: grandes, arriba y con 3/4 visibles. */
+
 .logo-lane{
-  position:absolute;top:240px;width:235px;height:420px;
-  overflow:hidden;z-index:0
+  position:absolute;
+  top:0;
+  width:390px;
+  height:520px;
+  overflow:hidden;
+  z-index:0;
 }
+
 .logo-lane.left{left:0}
 .logo-lane.right{right:0}
+
 .team-logo{
-  position:absolute;top:0;width:470px;height:420px;object-fit:contain
+  position:absolute;
+  top:0;
+  width:520px;
+  height:520px;
+  object-fit:contain;
 }
-.logo-lane.left img{left:-235px}
-.logo-lane.right img{right:-235px}
+
+.logo-lane.left img{left:-130px}
+.logo-lane.right img{right:-130px}
+
+/* Nombres y puntajes. */
+
+.team{
+  position:absolute;
+  top:285px;
+  width:400px;
+  text-align:center;
+  z-index:2;
+}
+
+.team.local{left:380px}
+.team.away{right:380px}
+
+.team-name{
+  height:100px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:50px;
+  font-weight:900;
+  line-height:1.05;
+  overflow-wrap:anywhere;
+}
+
+.score{
+  font-size:220px;
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-7px;
+  font-variant-numeric:tabular-nums;
+}
+
+/* Faltas y tiempos hacia los extremos de cada equipo. */
+
+.stats{
+  position:absolute;
+  top:315px;
+  width:260px;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  color:#a7b5c8;
+  font-size:24px;
+}
+
+.team.local .stats{left:-305px}
+.team.away .stats{right:-305px}
+
+.stats strong{
+  display:block;
+  font-size:54px;
+  color:white;
+  margin-top:8px;
+}
+
 .rule{
-  position:absolute;top:690px;left:270px;right:270px;
-  height:1px;background:#2e3949
+  position:absolute;
+  top:690px;
+  left:270px;
+  right:270px;
+  height:1px;
+  background:#2e3949;
 }
+
+/* Reloj principal inferior, más grande. */
+
 .clock-box{
-  position:absolute;top:714px;left:590px;width:420px;text-align:center
+  position:absolute;
+  top:705px;
+  left:550px;
+  width:500px;
+  text-align:center;
 }
+
 .clock{
-  font-size:105px;font-weight:900;line-height:1.1;
-  color:#ffb369;font-variant-numeric:tabular-nums;white-space:nowrap
+  font-size:140px;
+  font-weight:900;
+  line-height:1.1;
+  color:#ffb369;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
 }
-.clock-status{font-size:18px;color:#a2b0c3;margin-top:12px}
+
+.clock-status{
+  font-size:18px;
+  color:#a2b0c3;
+  margin-top:8px;
+}
+
+/* Flechas de posesión. */
+
 .possession{
-  position:absolute;top:735px;width:400px;
-  display:flex;flex-direction:column;align-items:center;
-  gap:14px;color:#637187;font-size:24px;font-weight:800
+  position:absolute;
+  top:743px;
+  width:280px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  color:#637187;
+  font-size:24px;
+  font-weight:800;
 }
-.possession.left{left:260px}
-.possession.right{right:260px}
+
+.possession.left{left:245px}
+.possession.right{right:245px}
+
 .arrow{
-  width:225px;height:78px;background:#303e51;
-  clip-path:polygon(0 50%,35% 0,35% 27%,100% 27%,100% 73%,35% 73%,35% 100%)
+  width:210px;
+  height:74px;
+  background:#303e51;
+  clip-path:polygon(
+    0 50%,35% 0,35% 27%,100% 27%,
+    100% 73%,35% 73%,35% 100%
+  );
 }
+
 .possession.right .arrow{transform:rotate(180deg)}
-.possession.active{color:#45ff42;filter:drop-shadow(0 0 10px #45ff4255)}
+
+.possession.active{
+  color:#45ff42;
+  filter:drop-shadow(0 0 10px #45ff4255);
+}
+
 .possession.active .arrow{background:#45ff42}
+
+/* Cuadros rojos: 160 px, un 25% más grandes que los anteriores. */
+
+.shot-box{
+  position:absolute;
+  top:714px;
+  width:160px;
+  height:160px;
+  background:#780c17;
+  border:4px solid white;
+  border-radius:7px;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:104px;
+  line-height:1;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+  z-index:3;
+}
+
+.shot-box.left{left:58px}
+.shot-box.right{right:58px}
+
+.shot-box.inactive{
+  opacity:.55;
+  background:#780c17;
+  box-shadow:none;
+}
+
+.shot-box.active{
+  opacity:1;
+  background:#fa142e;
+  box-shadow:0 0 25px #ff1b3566;
+}
+
+.shot-box.expired{
+  background:#fa142e;
+  box-shadow:0 0 0 6px #ffca40;
+}
+
+/* Sección de 24 segundos en el control. */
+
+.shot-main{
+  width:100%;
+  min-height:76px;
+  background:#d7152d!important;
+  border-color:white!important;
+  font-weight:900;
+  font-size:20px;
+}
+
+.shot-summary{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.shot-mini{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  color:#bcc7d8;
+}
+
+.shot-mini b{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  min-width:55px;
+  height:55px;
+  background:#a40e19;
+  border:2px solid white;
+  border-radius:5px;
+  color:white;
+  font-size:30px;
+}
+
+.shot-mini.inactive{opacity:.55}
+.shot-state{color:#ffbb7c;min-height:22px}
+
 #viewtools{display:none}
 
-/* Pantalla grande: utiliza el espacio disponible sin desbordarse. */
+/* Pantalla grande. */
+
 body.display header,
 body.display #intro,
 body.display #links,
 body.display #controls,
-body.display #recovery-note{display:none}
+body.display #recovery-note{
+  display:none;
+}
+
 body.display main{max-width:none;padding:0}
+
 body.display .board{
-  height:100vh;height:100dvh;
-  width:100%;aspect-ratio:auto;border-radius:0
+  height:100vh;
+  height:100dvh;
+  width:100%;
+  aspect-ratio:auto;
+  border-radius:0;
 }
+
 body.display #viewtools{
-  display:block;position:fixed;right:10px;bottom:10px;
-  z-index:5;opacity:.2
+  display:block;
+  position:fixed;
+  right:10px;
+  bottom:10px;
+  z-index:5;
+  opacity:.15;
 }
+
 body.display #viewtools:hover{opacity:1}
+
 body.display #message{
-  position:fixed;left:10px;bottom:0;font-size:12px;z-index:5
+  position:fixed;
+  left:10px;
+  bottom:0;
+  font-size:12px;
+  z-index:5;
 }
+
 @media(max-width:650px){
   #controls,.logo-grid{grid-template-columns:1fr}
   .wide{grid-column:auto}
@@ -188,27 +487,6 @@ body.display #message{
   header{padding:14px}
   .panel{padding:16px}
 }
-
-/* Logos superiores: 3/4 visibles; zonas separadas de los puntos. */
-.logo-lane{top:0;width:390px;height:520px}.team-logo{width:520px;height:520px}
-.logo-lane.left img{left:-130px}.logo-lane.right img{right:-130px}
-.team{top:285px;width:360px}.team.local{left:400px}.team.away{right:400px}
-.team-name{height:85px;font-size:40px}.score{font-size:190px}
-.stats{margin-top:18px;gap:38px}.stats strong{font-size:48px}
-.possession{top:743px;width:280px}.possession.left{left:245px}.possession.right{right:245px}
-.arrow{width:210px;height:74px}
-.shot-box{position:absolute;top:734px;width:128px;height:128px;background:#a40e19;border:4px solid white;border-radius:7px;color:white;display:flex;align-items:center;justify-content:center;font-size:83px;line-height:1;font-weight:900;font-variant-numeric:tabular-nums;box-shadow:0 0 0 3px #39050b;z-index:3}
-.shot-box.left{left:74px}.shot-box.right{right:74px}
-.shot-box.active{background:#fa142e;box-shadow:0 0 25px #ff1b3566,0 0 0 3px white}
-.shot-box.expired{background:#fa142e;box-shadow:0 0 0 6px #ffca40}
-.shot-caption{position:absolute;top:708px;font-size:16px;letter-spacing:1px;width:128px;text-align:center;color:#fbb2b9}
-.shot-caption.left{left:74px}.shot-caption.right{right:74px}
-.shot-main{width:100%;min-height:76px;background:#d7152d!important;border-color:white!important;font-weight:900;font-size:20px}
-.shot-summary{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:15px}
-.shot-mini{display:inline-flex;align-items:center;gap:9px;color:#bcc7d8}
-.shot-mini b{display:inline-flex;justify-content:center;align-items:center;min-width:55px;height:55px;background:#a40e19;border:2px solid white;border-radius:5px;color:white;font-size:30px}
-.shot-state{color:#ffbb7c;min-height:22px}
-
 </style>
 </head>
 
@@ -219,107 +497,134 @@ body.display #message{
 </header>
 
 <main>
-<section id="home">
-  <h1>El partido, en tus manos.</h1>
-  <p class="muted">Controla desde el teléfono y muestra el tablero en otra pantalla.</p>
+  <section id="home">
+    <h1>El partido, en tus manos.</h1>
+    <p class="muted">
+      Controla desde el teléfono y muestra el tablero en otra pantalla.
+    </p>
 
-  <section class="panel" id="saved-panel" hidden>
-    <h3>Retomar partido</h3>
-    <p class="muted small">Controles guardados en este navegador.</p>
-    <div id="saved-games"></div>
+    <section class="panel" id="saved-panel" hidden>
+      <h3>Retomar partido</h3>
+      <p class="muted small">Controles guardados en este navegador.</p>
+      <div id="saved-games"></div>
+    </section>
+
+    <section class="panel">
+      <h3>Comenzar un partido</h3>
+      <button class="orange" id="create">Crear partido</button>
+
+      <label for="code">Código de un partido para ver su pantalla</label>
+      <input id="code" maxlength="8"
+             placeholder="Código de 8 caracteres">
+
+      <div class="bar">
+        <button id="join">Ver tablero</button>
+      </div>
+    </section>
   </section>
 
-  <section class="panel">
-    <h3>Comenzar un partido</h3>
-    <button class="orange" id="create">Crear partido</button>
-    <label for="code">Código de un partido para ver su pantalla</label>
-    <input id="code" maxlength="8" placeholder="Código de 8 caracteres">
-    <div class="bar"><button id="join">Ver tablero</button></div>
-  </section>
-</section>
+  <section id="app" hidden>
+    <div id="intro">
+      <h1>Control del marcador</h1>
+      <p class="muted">Los cambios se guardan online.</p>
+    </div>
 
-<section id="app" hidden>
-  <div id="intro">
-    <h1>Control del marcador</h1>
-    <p class="muted">Los cambios se guardan online.</p>
-  </div>
+    <div id="links" class="bar">
+      <button class="orange" id="open">Abrir pantalla ↗</button>
+      <button id="copy">Copiar enlace de pantalla</button>
+      <button id="copycontrol">Copiar enlace de control</button>
 
-  <div id="links" class="bar">
-    <button class="orange" id="open">Abrir pantalla ↗</button>
-    <button id="copy">Copiar enlace de pantalla</button>
-    <button id="copycontrol">Copiar enlace de control</button>
-    <a class="button" href="index.html">Inicio / partidos guardados</a>
-    <span class="muted small" id="room"></span>
-  </div>
+      <a class="button" href="index.html">
+        Inicio / partidos guardados
+      </a>
 
-  <div class="board" id="board">
-    <div class="stage" id="stage">
-      <div class="emblem">
-        <img src="logo-p76.png" alt="Punto Deportivo 76">
-      </div>
+      <span class="muted small" id="room"></span>
+    </div>
 
-      <div class="period" id="period">1º PERÍODO</div>
+    <div class="board" id="board">
+      <div class="stage" id="stage">
 
-      <div class="logo-lane left">
-        <img class="team-logo" id="logo0" alt="Logotipo local" hidden>
-      </div>
-      <div class="logo-lane right">
-        <img class="team-logo" id="logo1" alt="Logotipo visita" hidden>
-      </div>
-
-      <div class="team local">
-        <div class="team-name" id="n0">LOCAL</div>
-        <div class="score" id="s0">0</div>
-        <div class="stats">
-          <div>FALTAS<strong id="f0">0</strong></div>
-          <div>TIEMPOS<strong id="t0">0</strong></div>
+        <div class="emblem">
+          <img src="logo-p76-nuevo.png" alt="Punto Deportivo 76">
         </div>
-      </div>
 
-      <div class="team away">
-        <div class="team-name" id="n1">VISITA</div>
-        <div class="score" id="s1">0</div>
-        <div class="stats">
-          <div>FALTAS<strong id="f1">0</strong></div>
-          <div>TIEMPOS<strong id="t1">0</strong></div>
+        <div class="period" id="period">1º PERÍODO</div>
+
+        <div class="logo-lane left">
+          <img class="team-logo" id="logo0"
+               alt="Logotipo local" hidden>
         </div>
-      </div>
 
-      <div class="rule"></div>
-      <span class="shot-caption left" aria-hidden="true">24 SEGUNDOS</span>
-      <div class="shot-box left" id="shot0" aria-label="24 segundos local">24</div>
-      <span class="shot-caption right" aria-hidden="true">24 SEGUNDOS</span>
-      <div class="shot-box right" id="shot1" aria-label="24 segundos visita">24</div>
+        <div class="logo-lane right">
+          <img class="team-logo" id="logo1"
+               alt="Logotipo visita" hidden>
+        </div>
 
-      <div class="possession left" id="poss0">
-        <div class="arrow" aria-hidden="true"></div>
-        <span id="possname0">LOCAL</span>
-      </div>
+        <div class="team local">
+          <div class="team-name" id="n0">LOCAL</div>
+          <div class="score" id="s0">0</div>
 
-      <div class="clock-box">
-        <div class="clock" id="clock">10:00</div>
-        <div class="clock-status" id="clockstatus">RELOJ DETENIDO</div>
-      </div>
+          <div class="stats">
+            <div>FALTAS<strong id="f0">0</strong></div>
+            <div>TIEMPOS<strong id="t0">0</strong></div>
+          </div>
+        </div>
 
-      <div class="possession right" id="poss1">
-        <div class="arrow" aria-hidden="true"></div>
-        <span id="possname1">VISITA</span>
+        <div class="team away">
+          <div class="team-name" id="n1">VISITA</div>
+          <div class="score" id="s1">0</div>
+
+          <div class="stats">
+            <div>FALTAS<strong id="f1">0</strong></div>
+            <div>TIEMPOS<strong id="t1">0</strong></div>
+          </div>
+        </div>
+
+        <div class="rule"></div>
+
+        <div class="shot-box left inactive"
+             id="shot0"
+             aria-label="24 segundos local"
+             aria-disabled="true">24</div>
+
+        <div class="shot-box right inactive"
+             id="shot1"
+             aria-label="24 segundos visita"
+             aria-disabled="true">24</div>
+
+        <div class="possession left" id="poss0">
+          <div class="arrow" aria-hidden="true"></div>
+          <span id="possname0">LOCAL</span>
+        </div>
+
+        <div class="clock-box">
+          <div class="clock" id="clock">10:00</div>
+          <div class="clock-status" id="clockstatus">
+            RELOJ DETENIDO
+          </div>
+        </div>
+
+        <div class="possession right" id="poss1">
+          <div class="arrow" aria-hidden="true"></div>
+          <span id="possname1">VISITA</span>
+        </div>
+
       </div>
     </div>
-  </div>
 
-  <div id="viewtools">
-    <button id="fullscreen">Pantalla completa</button>
-  </div>
+    <div id="viewtools">
+      <button id="fullscreen">Pantalla completa</button>
+    </div>
 
-  <div id="message" role="status"></div>
-  <p class="muted small" id="recovery-note" hidden></p>
-  <div id="controls"></div>
-</section>
+    <div id="message" role="status"></div>
+    <p class="muted small" id="recovery-note" hidden></p>
+    <div id="controls"></div>
+  </section>
 </main>
 
 <script>
 const API='https://p76-tablero-basket.botanicalmesa8.chatgpt.site';
+
 const $=id=>document.getElementById(id);
 const query=new URLSearchParams(location.search);
 const id=query.get('partido');
@@ -336,90 +641,221 @@ let queue=Promise.resolve();
 
 if(view)document.body.classList.add('display');
 
-function message(text){$('message').textContent=text;}
+function message(text){
+  $('message').textContent=text;
+}
+
+function freshShot(){
+  return {
+    team:null,
+    seconds:24,
+    running:false,
+    stamp:Date.now()
+  };
+}
 
 function normalize(data){
   data.logos=Array.isArray(data.logos)&&data.logos.length===2
     ?data.logos:['',''];
-  data.possession=[0,1].includes(data.possession)?data.possession:null;
+
+  data.possession=[0,1].includes(data.possession)
+    ?data.possession:null;
+
   const shot=data.shot;
-  data.shot=shot&&[null,0,1].includes(shot.team)&&Number.isFinite(shot.seconds)&&shot.seconds>=0&&shot.seconds<=24&&Number.isFinite(shot.stamp)
-    ?{team:shot.team,seconds:shot.seconds,running:shot.team!==null&&shot.running===true,stamp:shot.stamp}
-    :{team:null,seconds:24,running:false,stamp:Date.now()};
+
+  const valid=shot&&
+    [null,0,1].includes(shot.team)&&
+    Number.isFinite(shot.seconds)&&
+    shot.seconds>=0&&
+    shot.seconds<=24&&
+    Number.isFinite(shot.stamp);
+
+  data.shot=valid
+    ?{
+      team:shot.team,
+      seconds:shot.seconds,
+      running:shot.team!==null&&shot.running===true,
+      stamp:shot.stamp
+    }
+    :freshShot();
+
   return data;
 }
 
+/* Reloj principal. */
+
 function remaining(){
   if(!state)return 0;
-  return Math.max(0,state.seconds-
-    (state.running?Math.floor((Date.now()-state.stamp)/1000):0));
+
+  const elapsed=state.running
+    ?Math.max(0,Math.floor((Date.now()-state.stamp)/1000))
+    :0;
+
+  return Math.max(0,state.seconds-elapsed);
 }
 
+/* Cuenta de 24 segundos: una sola cuenta activa. */
 
 function shotRemaining(shot=state?.shot,now=Date.now()){
   if(!shot)return 24;
-  return Math.max(0,Math.min(24,shot.seconds-(shot.running?Math.max(0,now-shot.stamp)/1000:0)));
+
+  const elapsed=shot.running
+    ?Math.max(0,now-shot.stamp)/1000
+    :0;
+
+  return Math.max(0,Math.min(24,shot.seconds-elapsed));
 }
+
 function switchShot(){
   const previous=state.shot.team;
-  state.shot={team:previous===null?0:1-previous,seconds:24,running:true,stamp:Date.now()};
+
+  state.shot={
+    team:previous===0?1:0,
+    seconds:24,
+    running:true,
+    stamp:Date.now()
+  };
 }
+
 function pauseShot(){
   if(state.shot.team===null)return;
-  const time=shotRemaining();
-  state.shot={...state.shot,seconds:time,running:time>0&&!state.shot.running,stamp:Date.now()};
+
+  const seconds=shotRemaining();
+
+  state.shot={
+    ...state.shot,
+    seconds,
+    running:seconds>0&&!state.shot.running,
+    stamp:Date.now()
+  };
 }
+
 function resetShot(){
-  state.shot={...state.shot,seconds:24,running:false,stamp:Date.now()};
+  state.shot={
+    ...state.shot,
+    seconds:24,
+    running:false,
+    stamp:Date.now()
+  };
 }
-function clearShot(){state.shot={team:null,seconds:24,running:false,stamp:Date.now()};}
+
+function clearShot(){
+  state.shot=freshShot();
+}
+
 function renderShot(){
-  const shot=state.shot,seconds=Math.ceil(shotRemaining());
+  const shot=state.shot;
+  const seconds=Math.ceil(shotRemaining());
+
   for(let i=0;i<2;i++){
-    const active=shot.team===i;
-    $('shot'+i).textContent=active?seconds:24;
-    $('shot'+i).classList.toggle('active',active);
-    $('shot'+i).classList.toggle('expired',active&&seconds===0);
-    $('shot'+i).setAttribute('aria-label','24 segundos '+state.names[i]+': '+(active?seconds:24));
-    if($('shotmini'+i))$('shotmini'+i).textContent=active?seconds:24;
-    if($('shotteam'+i))$('shotteam'+i).textContent=state.names[i];
+    const selected=shot.team===i;
+    const counting=selected&&shot.running&&seconds>0;
+    const value=selected?seconds:24;
+    const box=$('shot'+i);
+
+    box.textContent=value;
+    box.classList.toggle('active',selected);
+    box.classList.toggle('inactive',!selected);
+    box.classList.toggle('expired',selected&&seconds===0);
+
+    box.setAttribute('aria-disabled',String(!selected));
+    box.setAttribute(
+      'aria-label',
+      state.names[i]+': '+value+' segundos'+
+      (counting?', cuenta en marcha':selected?', detenido':', deshabilitado')
+    );
+
+    if($('shotmini'+i)){
+      $('shotmini'+i).textContent=value;
+      $('shotmini'+i).parentElement.classList.toggle(
+        'inactive',!selected
+      );
+    }
+
+    if($('shotteam'+i)){
+      $('shotteam'+i).textContent=state.names[i];
+    }
   }
+
   if($('switchshot')){
-    const next=shot.team===null?0:1-shot.team;
-    $('switchshot').textContent=(shot.team===null?'Iniciar 24 s · ':'Cambiar a ')+state.names[next]+(shot.team===null?'':' · 24 s');
+    const next=shot.team===0?1:0;
+
+    $('switchshot').textContent=
+      (shot.team===null?'Iniciar 24 s · ':'Cambiar a ')+
+      state.names[next]+
+      (shot.team===null?'':' · 24 s');
+
     $('pauseshot').disabled=shot.team===null||seconds===0;
-    $('pauseshot').textContent=shot.running&&seconds>0?'Pausar 24 s':'Continuar 24 s';
-    $('shotstate').textContent=shot.team===null?'Listo para iniciar en el equipo local.':state.names[shot.team]+' · '+(seconds===0?'TIEMPO CUMPLIDO':shot.running?'CUENTA EN MARCHA':'PAUSADO');
+
+    $('pauseshot').textContent=
+      shot.running&&seconds>0?'Pausar 24 s':'Continuar 24 s';
+
+    $('shotstate').textContent=shot.team===null
+      ?'Ambos cuadros están en 24. Listo para iniciar en local.'
+      :state.names[shot.team]+' · '+
+        (seconds===0
+          ?'TIEMPO CUMPLIDO'
+          :shot.running?'CUENTA EN MARCHA':'PAUSADO');
   }
 }
+
+/* Logotipos. */
 
 function safeLogo(value){
   if(typeof value!=='string')return '';
-  if(/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(value)
-    &&value.length<250000)return value;
+
+  const imageData=
+    /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/;
+
+  if(imageData.test(value)&&value.length<250000){
+    return value;
+  }
+
   try{
     const url=new URL(value);
     return url.protocol==='https:'?url.href:'';
-  }catch{return '';}
+  }catch{
+    return '';
+  }
 }
+
+/* Actualización del tablero. */
 
 function render(){
   if(!state)return;
+
   renderShot();
+
   for(let i=0;i<2;i++){
     $('n'+i).textContent=state.names[i];
     $('s'+i).textContent=state.scores[i];
+
+    const digits=String(state.scores[i]).length;
+
     $('s'+i).style.fontSize=
-      String(state.scores[i]).length>3?'135px':'190px';
+      digits>3?'155px':'220px';
+
+    $('n'+i).style.fontSize=
+      state.names[i].length>18?'36px':'50px';
+
     $('f'+i).textContent=state.fouls[i];
     $('t'+i).textContent=state.timeouts[i];
+
     $('possname'+i).textContent=state.names[i];
-    $('poss'+i).classList.toggle('active',state.possession===i);
-    $('poss'+i).setAttribute('aria-label',
-      state.names[i]+(state.possession===i?' tiene la posesión':' sin posesión'));
+
+    $('poss'+i).classList.toggle(
+      'active',state.possession===i
+    );
+
+    $('poss'+i).setAttribute(
+      'aria-label',
+      state.names[i]+
+      (state.possession===i?' tiene la posesión':' sin posesión')
+    );
 
     const image=$('logo'+i);
     const source=safeLogo(state.logos[i]);
+
     if(source){
       if(image.getAttribute('src')!==source){
         image.hidden=false;
@@ -432,22 +868,37 @@ function render(){
     }
 
     const preview=$('preview'+i);
+
     if(preview){
       preview.hidden=!source;
-      if(source&&preview.getAttribute('src')!==source)preview.src=source;
+
+      if(source&&preview.getAttribute('src')!==source){
+        preview.src=source;
+      }
     }
 
     const button=$('pick'+i);
+
     if(button){
-      button.textContent=(i?'▶ ':'◀ ')+state.names[i];
-      button.setAttribute('aria-pressed',String(state.possession===i));
+      button.textContent=
+        (i?'▶ ':'◀ ')+state.names[i];
+
+      button.setAttribute(
+        'aria-pressed',
+        String(state.possession===i)
+      );
     }
   }
 
-  const clear=$('clearpos');
-  if(clear)clear.setAttribute('aria-pressed',String(state.possession===null));
+  if($('clearpos')){
+    $('clearpos').setAttribute(
+      'aria-pressed',
+      String(state.possession===null)
+    );
+  }
 
   const seconds=remaining();
+
   $('clock').textContent=
     String(Math.floor(seconds/60)).padStart(2,'0')+':'+
     String(seconds%60).padStart(2,'0');
@@ -456,42 +907,66 @@ function render(){
     ?'PRÓRROGA '+(state.period-4)
     :state.period+'º PERÍODO';
 
-  $('clockstatus').textContent=!connected?'SIN CONEXIÓN':
-    seconds===0?'TIEMPO CUMPLIDO':
-    state.running?'EN JUEGO':'RELOJ DETENIDO';
+  $('clockstatus').textContent=!connected
+    ?'SIN CONEXIÓN'
+    :seconds===0
+      ?'TIEMPO CUMPLIDO'
+      :state.running?'EN JUEGO':'RELOJ DETENIDO';
 
   if($('toggle')){
-    $('toggle').textContent=state.running?'Pausar reloj':'Iniciar reloj';
+    $('toggle').textContent=
+      state.running?'Pausar reloj':'Iniciar reloj';
   }
 }
 
 for(let i=0;i<2;i++){
-  $('logo'+i).onerror=()=>{$('logo'+i).hidden=true;};
+  $('logo'+i).onerror=()=>{
+    $('logo'+i).hidden=true;
+  };
 }
+
+/* Escala completa del tablero. */
 
 function fitBoard(){
   const board=$('board');
   const width=board.clientWidth;
   const height=board.clientHeight;
+
   if(!width||!height)return;
+
   const scale=Math.min(width/1600,height/900);
+
   $('stage').style.transform='scale('+scale+')';
   $('stage').style.left=((width-1600*scale)/2)+'px';
   $('stage').style.top=((height-900*scale)/2)+'px';
 }
+
 if('ResizeObserver' in window){
   new ResizeObserver(fitBoard).observe($('board'));
 }
+
 window.addEventListener('resize',fitBoard);
+
+/* Guardado de controles para retomar partidos. */
 
 function savedGames(){
   try{
-    const games=JSON.parse(localStorage.getItem(STORAGE)||'[]');
-    return Array.isArray(games)?games.filter(game=>
-      game&&/^[a-f0-9-]{8}$/.test(game.id)&&
-      typeof game.key==='string'&&game.key.length>0&&game.key.length<200
-    ).slice(0,20):[];
-  }catch{return [];}
+    const games=JSON.parse(
+      localStorage.getItem(STORAGE)||'[]'
+    );
+
+    return Array.isArray(games)
+      ?games.filter(game=>
+        game&&
+        /^[a-f0-9-]{8}$/.test(game.id)&&
+        typeof game.key==='string'&&
+        game.key.length>0&&
+        game.key.length<200
+      ).slice(0,20)
+      :[];
+  }catch{
+    return [];
+  }
 }
 
 function controlURL(game){
@@ -509,22 +984,33 @@ function screenURL(gameId){
 
 function saveControl(gameId,controlKey,data){
   if(!gameId||!controlKey)return;
+
   let success=true;
+
   try{
     const games=savedGames();
     const old=games.find(game=>game.id===gameId);
+
     const entry={
-      id:gameId,key:controlKey,
+      id:gameId,
+      key:controlKey,
       names:data?.names||old?.names||['LOCAL','VISITA'],
       updated:Date.now()
     };
-    localStorage.setItem(STORAGE,JSON.stringify(
-      [entry,...games.filter(game=>game.id!==gameId)].slice(0,20)
-    ));
-  }catch{success=false;}
+
+    localStorage.setItem(
+      STORAGE,
+      JSON.stringify(
+        [entry,...games.filter(game=>game.id!==gameId)].slice(0,20)
+      )
+    );
+  }catch{
+    success=false;
+  }
 
   if(id&&key){
     $('recovery-note').hidden=false;
+
     $('recovery-note').textContent=success
       ?'Control guardado en este navegador. Para volver, abre Inicio y pulsa Retomar partido. Conserva también una copia del enlace.'
       :'No se pudo guardar el control en este navegador. Copia y conserva su enlace.';
@@ -533,6 +1019,7 @@ function saveControl(gameId,controlKey,data){
 
 function renderSaved(){
   const games=savedGames();
+
   $('saved-panel').hidden=!games.length;
   $('saved-games').replaceChildren();
 
@@ -541,8 +1028,9 @@ function renderSaved(){
     row.className='saved-row';
 
     const name=document.createElement('strong');
-    name.textContent=(Array.isArray(game.names)
-      ?game.names:['LOCAL','VISITA']).join(' · ');
+    name.textContent=(
+      Array.isArray(game.names)?game.names:['LOCAL','VISITA']
+    ).join(' · ');
 
     const detail=document.createElement('p');
     detail.className='muted small';
@@ -563,14 +1051,24 @@ function renderSaved(){
 
     const forget=document.createElement('button');
     forget.textContent='Olvidar control';
+
     forget.onclick=()=>{
-      if(!confirm('¿Quitar este control guardado? Necesitarás su enlace para volver a modificar el partido.'))return;
+      if(!confirm(
+        '¿Quitar este control guardado? Necesitarás su enlace para volver a modificar el partido.'
+      ))return;
+
       try{
-        localStorage.setItem(STORAGE,JSON.stringify(
-          savedGames().filter(item=>item.id!==game.id)
-        ));
+        localStorage.setItem(
+          STORAGE,
+          JSON.stringify(
+            savedGames().filter(item=>item.id!==game.id)
+          )
+        );
+
         renderSaved();
-      }catch{alert('No se pudo quitar el control.');}
+      }catch{
+        alert('No se pudo quitar el control.');
+      }
     };
 
     bar.append(resume,screen,forget);
@@ -579,38 +1077,59 @@ function renderSaved(){
   }
 }
 
+/* Comunicación con el servicio online. */
+
 async function request(path,options={}){
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),15000);
+
   try{
     const response=await fetch(API+path,{
-      ...options,signal:controller.signal,cache:'no-store'
+      ...options,
+      signal:controller.signal,
+      cache:'no-store'
     });
+
     if(!response.ok){
-      throw new Error(response.status===404?'Partido no encontrado':
-        response.status===403?'Enlace de control no autorizado':
-        'No se pudo conectar');
+      throw new Error(
+        response.status===404
+          ?'Partido no encontrado'
+          :response.status===403
+            ?'Enlace de control no autorizado'
+            :'No se pudo conectar'
+      );
     }
+
     return await response.json();
-  }finally{clearTimeout(timer);}
+  }finally{
+    clearTimeout(timer);
+  }
 }
 
 async function load(){
   if(saving)return;
+
   const started=revision;
+
   try{
     const data=await request('/api/game/'+id);
+
     if(saving||started!==revision)return;
+
     state=normalize(data);
     connected=true;
+
     $('status').textContent='● CONECTADO';
+
     if(key){
       saveControl(id,key,state);
+
       if(!controlsReady){
         controlsReady=true;
         buildControls();
       }
     }
+
     render();
   }catch(error){
     connected=false;
@@ -623,23 +1142,30 @@ async function load(){
 function change(mutator){
   queue=queue.then(async()=>{
     if(!state)return;
+
     saving=true;
     revision++;
+
     const previous=JSON.parse(JSON.stringify(state));
+
     try{
       state.seconds=remaining();
       state.stamp=Date.now();
+
       mutator();
       render();
 
-      state=normalize(await request('/api/game/'+id,{
-        method:'PUT',
-        headers:{
-          'Content-Type':'application/json',
-          'X-Control-Key':key
-        },
-        body:JSON.stringify(state)
-      }));
+      state=normalize(
+        await request('/api/game/'+id,{
+          method:'PUT',
+          headers:{
+            'Content-Type':'application/json',
+            'X-Control-Key':key
+          },
+          body:JSON.stringify(state)
+        })
+      );
+
       connected=true;
       saveControl(id,key,state);
       message('Cambios guardados');
@@ -651,77 +1177,131 @@ function change(mutator){
       render();
     }
   });
+
   return queue;
 }
+
+/* Preparación de imágenes cargadas desde el teléfono. */
 
 async function shrinkLogo(file){
   if(!['image/png','image/jpeg','image/webp'].includes(file.type)){
     throw new Error('Usa una imagen PNG, JPG o WebP.');
   }
+
   if(file.size>10*1024*1024){
     throw new Error('La imagen debe pesar menos de 10 MB.');
   }
 
   const objectURL=URL.createObjectURL(file);
+
   try{
     const image=new Image();
+
     await new Promise((resolve,reject)=>{
       image.onload=resolve;
-      image.onerror=()=>reject(new Error('No se pudo abrir la imagen.'));
+      image.onerror=()=>{
+        reject(new Error('No se pudo abrir la imagen.'));
+      };
       image.src=objectURL;
     });
 
     const canvas=document.createElement('canvas');
-    const scale=Math.min(1,512/Math.max(image.width,image.height));
+
+    const scale=Math.min(
+      1,512/Math.max(image.width,image.height)
+    );
+
     canvas.width=Math.max(1,Math.round(image.width*scale));
     canvas.height=Math.max(1,Math.round(image.height*scale));
 
-    canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);
+    canvas.getContext('2d').drawImage(
+      image,0,0,canvas.width,canvas.height
+    );
+
     let result=canvas.toDataURL('image/webp',.85);
 
     if(result.length>=250000){
       canvas.width=Math.max(1,Math.round(canvas.width/2));
       canvas.height=Math.max(1,Math.round(canvas.height/2));
-      canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);
+
+      canvas.getContext('2d').drawImage(
+        image,0,0,canvas.width,canvas.height
+      );
+
       result=canvas.toDataURL('image/webp',.75);
     }
-    if(result.length>=250000)throw new Error('Prueba con una imagen más pequeña.');
+
+    if(result.length>=250000){
+      throw new Error('Prueba con una imagen más pequeña.');
+    }
+
     return result;
-  }finally{URL.revokeObjectURL(objectURL);}
+  }finally{
+    URL.revokeObjectURL(objectURL);
+  }
 }
+
+/* Construcción del control remoto. */
 
 function buildControls(){
   $('controls').innerHTML=`
     <section class="panel wide">
       <h3>Cuenta regresiva de 24 segundos</h3>
+
       <div class="shot-summary">
-        <span class="shot-mini"><span id="shotteam0">LOCAL</span><b id="shotmini0">24</b></span>
-        <span class="shot-mini"><span id="shotteam1">VISITA</span><b id="shotmini1">24</b></span>
+        <span class="shot-mini">
+          <span id="shotteam0">LOCAL</span>
+          <b id="shotmini0">24</b>
+        </span>
+
+        <span class="shot-mini">
+          <span id="shotteam1">VISITA</span>
+          <b id="shotmini1">24</b>
+        </span>
       </div>
-      <button class="shot-main" id="switchshot">Iniciar 24 s · LOCAL</button>
+
+      <button class="shot-main" id="switchshot">
+        Iniciar 24 s · LOCAL
+      </button>
+
       <div class="bar">
         <button id="pauseshot">Pausar 24 s</button>
         <button id="resetshot">Reponer 24 s y pausar</button>
         <button id="clearshot">Dejar ambos en 24</button>
       </div>
+
       <p class="shot-state" id="shotstate" role="status"></p>
-      <p class="muted small">Cada pulsación del botón rojo cambia al otro equipo y comienza nuevamente desde 24. Solo cuenta un cuadro a la vez; el otro muestra 24. Este reloj se maneja de forma independiente del reloj del partido y de las flechas de posesión.</p>
+
+      <p class="muted small">
+        Cada pulsación del botón rojo cambia al otro equipo e
+        inicia su cuenta desde 24. El cuadro anterior queda
+        deshabilitado y vuelve a 24. Solo cuenta uno a la vez.
+        Este reloj es independiente del reloj principal y de
+        las flechas de posesión.
+      </p>
     </section>
+
     <section class="panel wide">
       <h3>Posesión del balón</h3>
+
       <div class="possession-picker">
         <button id="pick0" aria-pressed="false">Local</button>
         <button id="pick1" aria-pressed="false">Visita</button>
-        <button id="clearpos" aria-pressed="true">Sin posesión</button>
+        <button id="clearpos" aria-pressed="true">
+          Sin posesión
+        </button>
       </div>
     </section>
 
     <section class="panel wide">
       <h3>Logotipos de los equipos</h3>
+
       <p class="muted small">
-        Sube una imagen o pega su enlace HTTPS.
-        Los logos se ven grandes en las esquinas superiores, con tres cuartos visibles y sin tapar los puntajes.
+        Sube una imagen o pega su enlace HTTPS. Los logos se
+        muestran en las esquinas superiores, con tres cuartos
+        visibles.
       </p>
+
       <div class="logo-grid" id="logo-editors"></div>
     </section>
 
@@ -730,19 +1310,28 @@ function buildControls(){
 
     <section class="panel wide">
       <h3>Reloj y período</h3>
+
       <div class="bar">
         <button class="orange" id="toggle">Iniciar reloj</button>
         <button id="next">Siguiente período</button>
         <button id="resetfouls">Reiniciar faltas</button>
       </div>
+
       <label>Tiempo: minutos y segundos</label>
+
       <div class="time-inputs">
-        <input type="number" id="minutes" min="0" max="99" value="10" aria-label="Minutos">
+        <input type="number" id="minutes"
+               min="0" max="99" value="10"
+               aria-label="Minutos">
         <span>:</span>
-        <input type="number" id="seconds" min="0" max="59" value="0" aria-label="Segundos">
+        <input type="number" id="seconds"
+               min="0" max="59" value="0"
+               aria-label="Segundos">
         <button id="settime">Aplicar tiempo</button>
       </div>
+
       <label for="setperiod">Período</label>
+
       <select id="setperiod">
         <option value="1">1º período</option>
         <option value="2">2º período</option>
@@ -753,31 +1342,47 @@ function buildControls(){
         <option value="7">Prórroga 3</option>
         <option value="8">Prórroga 4</option>
       </select>
+
       <div class="bar">
         <button id="reset">Reiniciar partido</button>
       </div>
+
       <p class="muted small">
         Reiniciar conserva los nombres y logos.
         Los tiempos pedidos muestran la cantidad utilizada.
       </p>
-    </section>`;
+    </section>
+  `;
 
   for(let i=0;i<2;i++){
-    $('pick'+i).onclick=()=>change(()=>state.possession=i);
+    $('pick'+i).onclick=()=>{
+      change(()=>state.possession=i);
+    };
 
     const editor=document.createElement('div');
     editor.className='logo-editor';
+
     editor.innerHTML=`
       <h4>${i?'Equipo visita':'Equipo local'}</h4>
-      <img class="preview" id="preview${i}" alt="Vista previa del logo" hidden>
+
+      <img class="preview" id="preview${i}"
+           alt="Vista previa del logo" hidden>
+
       <label for="upload${i}">Subir PNG, JPG o WebP</label>
-      <input type="file" id="upload${i}" accept="image/png,image/jpeg,image/webp">
-      <label for="url${i}">O pegar enlace HTTPS de la imagen</label>
+      <input type="file" id="upload${i}"
+             accept="image/png,image/jpeg,image/webp">
+
+      <label for="url${i}">
+        O pegar enlace HTTPS de la imagen
+      </label>
       <input type="url" id="url${i}" placeholder="https://…">
+
       <div class="bar">
         <button id="applylogo${i}">Guardar enlace</button>
         <button id="removelogo${i}">Quitar logo</button>
-      </div>`;
+      </div>
+    `;
+
     $('logo-editors').append(editor);
 
     $('url'+i).value=state.logos[i].startsWith('https:')
@@ -785,10 +1390,12 @@ function buildControls(){
 
     $('applylogo'+i).onclick=()=>{
       const value=$('url'+i).value.trim();
+
       if(!safeLogo(value)||!value.startsWith('https:')){
         message('Ingresa un enlace HTTPS directo a una imagen.');
         return;
       }
+
       change(()=>state.logos[i]=value);
     };
 
@@ -800,24 +1407,32 @@ function buildControls(){
     $('upload'+i).onchange=async event=>{
       const file=event.target.files[0];
       if(!file)return;
+
       try{
         message('Preparando logotipo…');
+
         const image=await shrinkLogo(file);
         await change(()=>state.logos[i]=image);
-      }catch(error){message(error.message);}
-      finally{event.target.value='';}
+      }catch(error){
+        message(error.message);
+      }finally{
+        event.target.value='';
+      }
     };
 
     $('team-control'+i).innerHTML=`
       <h3>${i?'Equipo visita':'Equipo local'}</h3>
+
       <label for="name${i}">Nombre del equipo</label>
       <input id="name${i}" maxlength="32">
+
       <div class="points">
         <button class="orange" data-points="1">+1</button>
         <button class="orange" data-points="2">+2</button>
         <button class="orange" data-points="3">+3</button>
         <button data-points="-1">−1</button>
       </div>
+
       <div class="line">
         <span>Faltas</span>
         <span>
@@ -825,52 +1440,83 @@ function buildControls(){
           <button data-field="fouls" data-value="1">+</button>
         </span>
       </div>
+
       <div class="line">
         <span>Tiempos pedidos</span>
         <span>
           <button data-field="timeouts" data-value="-1">−</button>
           <button data-field="timeouts" data-value="1">+</button>
         </span>
-      </div>`;
+      </div>
+    `;
 
     $('name'+i).value=state.names[i];
+
     $('name'+i).onchange=event=>{
-      const value=event.target.value.trim()||(i?'VISITA':'LOCAL');
+      const value=event.target.value.trim()||
+        (i?'VISITA':'LOCAL');
+
       change(()=>state.names[i]=value);
     };
 
-    $('team-control'+i).querySelectorAll('[data-points]').forEach(button=>{
-      button.onclick=()=>change(()=>{
-        state.scores[i]=Math.max(0,
-          state.scores[i]+Number(button.dataset.points));
+    $('team-control'+i)
+      .querySelectorAll('[data-points]')
+      .forEach(button=>{
+        button.onclick=()=>{
+          change(()=>{
+            state.scores[i]=Math.max(
+              0,
+              state.scores[i]+Number(button.dataset.points)
+            );
+          });
+        };
       });
-    });
 
-    $('team-control'+i).querySelectorAll('[data-field]').forEach(button=>{
-      button.onclick=()=>change(()=>{
-        const field=button.dataset.field;
-        state[field][i]=Math.max(0,
-          state[field][i]+Number(button.dataset.value));
+    $('team-control'+i)
+      .querySelectorAll('[data-field]')
+      .forEach(button=>{
+        button.onclick=()=>{
+          change(()=>{
+            const field=button.dataset.field;
+
+            state[field][i]=Math.max(
+              0,
+              state[field][i]+Number(button.dataset.value)
+            );
+          });
+        };
       });
-    });
   }
 
   $('switchshot').onclick=()=>change(switchShot);
   $('pauseshot').onclick=()=>change(pauseShot);
   $('resetshot').onclick=()=>change(resetShot);
   $('clearshot').onclick=()=>change(clearShot);
-  $('clearpos').onclick=()=>change(()=>state.possession=null);
 
-  $('toggle').onclick=()=>change(()=>state.running=!state.running);
+  $('clearpos').onclick=()=>{
+    change(()=>state.possession=null);
+  };
+
+  $('toggle').onclick=()=>{
+    change(()=>state.running=!state.running);
+  };
 
   $('settime').onclick=()=>{
     const minutes=Number($('minutes').value);
     const seconds=Number($('seconds').value);
-    if(!Number.isInteger(minutes)||!Number.isInteger(seconds)||
-      minutes<0||minutes>99||seconds<0||seconds>59){
-      message('Ingresa minutos entre 0 y 99 y segundos entre 0 y 59.');
+
+    if(
+      !Number.isInteger(minutes)||
+      !Number.isInteger(seconds)||
+      minutes<0||minutes>99||
+      seconds<0||seconds>59
+    ){
+      message(
+        'Ingresa minutos entre 0 y 99 y segundos entre 0 y 59.'
+      );
       return;
     }
+
     change(()=>{
       state.seconds=minutes*60+seconds;
       state.running=false;
@@ -878,19 +1524,24 @@ function buildControls(){
   };
 
   $('setperiod').value=String(state.period);
+
   $('setperiod').onchange=event=>{
     const period=Number(event.target.value);
     change(()=>state.period=period);
   };
 
   $('next').onclick=()=>{
-    if(!confirm('¿Avanzar de período? Se detendrá el reloj y se reiniciarán las faltas.'))return;
+    if(!confirm(
+      '¿Avanzar de período? Se detendrá el reloj, se reiniciarán las faltas y ambos cuadros volverán a 24.'
+    ))return;
+
     change(()=>{
       state.period++;
       state.seconds=state.period>4?300:600;
       state.running=false;
-      clearShot();
       state.fouls=[0,0];
+
+      clearShot();
       $('setperiod').value=String(state.period);
     });
   };
@@ -902,14 +1553,25 @@ function buildControls(){
   };
 
   $('reset').onclick=()=>{
-    if(!confirm('¿Reiniciar puntos, faltas, tiempos, reloj y posesión?'))return;
+    if(!confirm(
+      '¿Reiniciar puntos, faltas, tiempos, reloj, posesión y cuentas de 24 segundos?'
+    ))return;
+
     change(()=>{
       state={
-        names:state.names,logos:state.logos,
-        scores:[0,0],fouls:[0,0],timeouts:[0,0],
-        period:1,seconds:600,running:false,
-        stamp:Date.now(),possession:null,shot:{team:null,seconds:24,running:false,stamp:Date.now()}
+        names:state.names,
+        logos:state.logos,
+        scores:[0,0],
+        fouls:[0,0],
+        timeouts:[0,0],
+        period:1,
+        seconds:600,
+        running:false,
+        stamp:Date.now(),
+        possession:null,
+        shot:freshShot()
       };
+
       $('setperiod').value='1';
     });
   };
@@ -917,15 +1579,20 @@ function buildControls(){
   render();
 }
 
+/* Navegación y enlaces. */
+
 async function copy(text){
   try{
     await navigator.clipboard.writeText(text);
     message('Enlace copiado');
-  }catch{prompt('Copia este enlace',text);}
+  }catch{
+    prompt('Copia este enlace',text);
+  }
 }
 
 $('create').onclick=async()=>{
   $('create').disabled=true;
+
   try{
     const game=await request('/api/new',{method:'POST'});
     saveControl(game.id,game.key);
@@ -938,18 +1605,25 @@ $('create').onclick=async()=>{
 
 $('join').onclick=()=>{
   const code=$('code').value.trim().toLowerCase();
+
   if(!/^[a-f0-9-]{8}$/.test(code)){
     alert('Ingresa el código de 8 caracteres.');
     return;
   }
+
   location.href=screenURL(code);
 };
 
 $('fullscreen').onclick=async()=>{
   try{
-    if(document.fullscreenElement)await document.exitFullscreen();
-    else await document.documentElement.requestFullscreen();
-  }catch{message('El navegador no permite activar pantalla completa.');}
+    if(document.fullscreenElement){
+      await document.exitFullscreen();
+    }else{
+      await document.documentElement.requestFullscreen();
+    }
+  }catch{
+    message('El navegador no permite activar pantalla completa.');
+  }
 };
 
 renderSaved();
@@ -961,16 +1635,24 @@ if(id){
 
   if(key)saveControl(id,key);
 
-  $('open').onclick=()=>window.open(screenURL(id),'_blank');
-  $('copy').onclick=()=>copy(screenURL(id));
-  $('copycontrol').onclick=()=>copy(controlURL({id,key}));
+  $('open').onclick=()=>{
+    window.open(screenURL(id),'_blank');
+  };
+
+  $('copy').onclick=()=>{
+    copy(screenURL(id));
+  };
+
+  $('copycontrol').onclick=()=>{
+    copy(controlURL({id,key}));
+  };
 
   fitBoard();
   load();
+
   setInterval(load,1500);
-  setInterval(render,200);
+  setInterval(render,100);
 }
 </script>
 </body>
 </html>
-
