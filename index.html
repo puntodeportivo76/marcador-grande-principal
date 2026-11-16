@@ -188,6 +188,27 @@ body.display #message{
   header{padding:14px}
   .panel{padding:16px}
 }
+
+/* Logos superiores: 3/4 visibles; zonas separadas de los puntos. */
+.logo-lane{top:0;width:390px;height:520px}.team-logo{width:520px;height:520px}
+.logo-lane.left img{left:-130px}.logo-lane.right img{right:-130px}
+.team{top:285px;width:360px}.team.local{left:400px}.team.away{right:400px}
+.team-name{height:85px;font-size:40px}.score{font-size:190px}
+.stats{margin-top:18px;gap:38px}.stats strong{font-size:48px}
+.possession{top:743px;width:280px}.possession.left{left:245px}.possession.right{right:245px}
+.arrow{width:210px;height:74px}
+.shot-box{position:absolute;top:734px;width:128px;height:128px;background:#a40e19;border:4px solid white;border-radius:7px;color:white;display:flex;align-items:center;justify-content:center;font-size:83px;line-height:1;font-weight:900;font-variant-numeric:tabular-nums;box-shadow:0 0 0 3px #39050b;z-index:3}
+.shot-box.left{left:74px}.shot-box.right{right:74px}
+.shot-box.active{background:#fa142e;box-shadow:0 0 25px #ff1b3566,0 0 0 3px white}
+.shot-box.expired{background:#fa142e;box-shadow:0 0 0 6px #ffca40}
+.shot-caption{position:absolute;top:708px;font-size:16px;letter-spacing:1px;width:128px;text-align:center;color:#fbb2b9}
+.shot-caption.left{left:74px}.shot-caption.right{right:74px}
+.shot-main{width:100%;min-height:76px;background:#d7152d!important;border-color:white!important;font-weight:900;font-size:20px}
+.shot-summary{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:15px}
+.shot-mini{display:inline-flex;align-items:center;gap:9px;color:#bcc7d8}
+.shot-mini b{display:inline-flex;justify-content:center;align-items:center;min-width:55px;height:55px;background:#a40e19;border:2px solid white;border-radius:5px;color:white;font-size:30px}
+.shot-state{color:#ffbb7c;min-height:22px}
+
 </style>
 </head>
 
@@ -265,6 +286,10 @@ body.display #message{
       </div>
 
       <div class="rule"></div>
+      <span class="shot-caption left" aria-hidden="true">24 SEGUNDOS</span>
+      <div class="shot-box left" id="shot0" aria-label="24 segundos local">24</div>
+      <span class="shot-caption right" aria-hidden="true">24 SEGUNDOS</span>
+      <div class="shot-box right" id="shot1" aria-label="24 segundos visita">24</div>
 
       <div class="possession left" id="poss0">
         <div class="arrow" aria-hidden="true"></div>
@@ -317,6 +342,10 @@ function normalize(data){
   data.logos=Array.isArray(data.logos)&&data.logos.length===2
     ?data.logos:['',''];
   data.possession=[0,1].includes(data.possession)?data.possession:null;
+  const shot=data.shot;
+  data.shot=shot&&[null,0,1].includes(shot.team)&&Number.isFinite(shot.seconds)&&shot.seconds>=0&&shot.seconds<=24&&Number.isFinite(shot.stamp)
+    ?{team:shot.team,seconds:shot.seconds,running:shot.team!==null&&shot.running===true,stamp:shot.stamp}
+    :{team:null,seconds:24,running:false,stamp:Date.now()};
   return data;
 }
 
@@ -324,6 +353,44 @@ function remaining(){
   if(!state)return 0;
   return Math.max(0,state.seconds-
     (state.running?Math.floor((Date.now()-state.stamp)/1000):0));
+}
+
+
+function shotRemaining(shot=state?.shot,now=Date.now()){
+  if(!shot)return 24;
+  return Math.max(0,Math.min(24,shot.seconds-(shot.running?Math.max(0,now-shot.stamp)/1000:0)));
+}
+function switchShot(){
+  const previous=state.shot.team;
+  state.shot={team:previous===null?0:1-previous,seconds:24,running:true,stamp:Date.now()};
+}
+function pauseShot(){
+  if(state.shot.team===null)return;
+  const time=shotRemaining();
+  state.shot={...state.shot,seconds:time,running:time>0&&!state.shot.running,stamp:Date.now()};
+}
+function resetShot(){
+  state.shot={...state.shot,seconds:24,running:false,stamp:Date.now()};
+}
+function clearShot(){state.shot={team:null,seconds:24,running:false,stamp:Date.now()};}
+function renderShot(){
+  const shot=state.shot,seconds=Math.ceil(shotRemaining());
+  for(let i=0;i<2;i++){
+    const active=shot.team===i;
+    $('shot'+i).textContent=active?seconds:24;
+    $('shot'+i).classList.toggle('active',active);
+    $('shot'+i).classList.toggle('expired',active&&seconds===0);
+    $('shot'+i).setAttribute('aria-label','24 segundos '+state.names[i]+': '+(active?seconds:24));
+    if($('shotmini'+i))$('shotmini'+i).textContent=active?seconds:24;
+    if($('shotteam'+i))$('shotteam'+i).textContent=state.names[i];
+  }
+  if($('switchshot')){
+    const next=shot.team===null?0:1-shot.team;
+    $('switchshot').textContent=(shot.team===null?'Iniciar 24 s · ':'Cambiar a ')+state.names[next]+(shot.team===null?'':' · 24 s');
+    $('pauseshot').disabled=shot.team===null||seconds===0;
+    $('pauseshot').textContent=shot.running&&seconds>0?'Pausar 24 s':'Continuar 24 s';
+    $('shotstate').textContent=shot.team===null?'Listo para iniciar en el equipo local.':state.names[shot.team]+' · '+(seconds===0?'TIEMPO CUMPLIDO':shot.running?'CUENTA EN MARCHA':'PAUSADO');
+  }
 }
 
 function safeLogo(value){
@@ -338,11 +405,12 @@ function safeLogo(value){
 
 function render(){
   if(!state)return;
+  renderShot();
   for(let i=0;i<2;i++){
     $('n'+i).textContent=state.names[i];
     $('s'+i).textContent=state.scores[i];
     $('s'+i).style.fontSize=
-      String(state.scores[i]).length>3?'145px':'205px';
+      String(state.scores[i]).length>3?'135px':'190px';
     $('f'+i).textContent=state.fouls[i];
     $('t'+i).textContent=state.timeouts[i];
     $('possname'+i).textContent=state.names[i];
@@ -625,6 +693,21 @@ async function shrinkLogo(file){
 function buildControls(){
   $('controls').innerHTML=`
     <section class="panel wide">
+      <h3>Cuenta regresiva de 24 segundos</h3>
+      <div class="shot-summary">
+        <span class="shot-mini"><span id="shotteam0">LOCAL</span><b id="shotmini0">24</b></span>
+        <span class="shot-mini"><span id="shotteam1">VISITA</span><b id="shotmini1">24</b></span>
+      </div>
+      <button class="shot-main" id="switchshot">Iniciar 24 s · LOCAL</button>
+      <div class="bar">
+        <button id="pauseshot">Pausar 24 s</button>
+        <button id="resetshot">Reponer 24 s y pausar</button>
+        <button id="clearshot">Dejar ambos en 24</button>
+      </div>
+      <p class="shot-state" id="shotstate" role="status"></p>
+      <p class="muted small">Cada pulsación del botón rojo cambia al otro equipo y comienza nuevamente desde 24. Solo cuenta un cuadro a la vez; el otro muestra 24. Este reloj se maneja de forma independiente del reloj del partido y de las flechas de posesión.</p>
+    </section>
+    <section class="panel wide">
       <h3>Posesión del balón</h3>
       <div class="possession-picker">
         <button id="pick0" aria-pressed="false">Local</button>
@@ -637,7 +720,7 @@ function buildControls(){
       <h3>Logotipos de los equipos</h3>
       <p class="muted small">
         Sube una imagen o pega su enlace HTTPS.
-        Cada logo ocupa su franja lateral y no tapa los puntajes.
+        Los logos se ven grandes en las esquinas superiores, con tres cuartos visibles y sin tapar los puntajes.
       </p>
       <div class="logo-grid" id="logo-editors"></div>
     </section>
@@ -772,6 +855,10 @@ function buildControls(){
     });
   }
 
+  $('switchshot').onclick=()=>change(switchShot);
+  $('pauseshot').onclick=()=>change(pauseShot);
+  $('resetshot').onclick=()=>change(resetShot);
+  $('clearshot').onclick=()=>change(clearShot);
   $('clearpos').onclick=()=>change(()=>state.possession=null);
 
   $('toggle').onclick=()=>change(()=>state.running=!state.running);
@@ -802,6 +889,7 @@ function buildControls(){
       state.period++;
       state.seconds=state.period>4?300:600;
       state.running=false;
+      clearShot();
       state.fouls=[0,0];
       $('setperiod').value=String(state.period);
     });
@@ -820,7 +908,7 @@ function buildControls(){
         names:state.names,logos:state.logos,
         scores:[0,0],fouls:[0,0],timeouts:[0,0],
         period:1,seconds:600,running:false,
-        stamp:Date.now(),possession:null
+        stamp:Date.now(),possession:null,shot:{team:null,seconds:24,running:false,stamp:Date.now()}
       };
       $('setperiod').value='1';
     });
@@ -885,3 +973,4 @@ if(id){
 </script>
 </body>
 </html>
+
