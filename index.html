@@ -1129,8 +1129,10 @@ function acceptState(data,full=false){
   const incomingAssets=data._p76Assets??0;
   if(!full&&lastAssets!==null&&incomingAssets!==lastAssets){needFull=true;if(!loading){needFull=false;load(true);}return;}
   latestVersion=version;
-  state=normalize({...data,logos:logos||['','']});
-  if(full){lastAssets=incomingAssets;ackLogos=JSON.stringify(state.logos);}
+  const sounds=full?data.sounds:state?.sounds;
+  const finalResult=data.finalResult?{...data.finalResult,logos:data.finalResult.logos||state?.finalResult?.logos||logos||['','']}:data.finalResult;
+  state=normalize({...data,logos:logos||['',''],sounds:sounds||{},finalResult});
+  if(full){lastAssets=incomingAssets;ackLogos=JSON.stringify({logos:state.logos,sounds:state.sounds||{}});}
   connected=true;
 }
 function connectSocket(){
@@ -1252,7 +1254,8 @@ function flushChanges(){
         try{
           const sending={...snapshot};
           // Los escudos solo viajan cuando cambian, no al iniciar o detener relojes.
-          if(JSON.stringify(sending.logos)===ackLogos)delete sending.logos;
+          if(JSON.stringify({logos:sending.logos,sounds:sending.sounds||{}})===ackLogos){delete sending.logos;delete sending.sounds;}
+          if(sending.finalResult)delete sending.finalResult.logos;
           const direct=sendDirect(sending);
           let ack;
           try{ack=direct?await direct:null;}catch{}
@@ -1261,7 +1264,7 @@ function flushChanges(){
             body:JSON.stringify({key,state:sending})
           });
           if(ack.ok!==true)throw new Error('El servicio necesita la actualización de sincronización');
-          ackLogos=JSON.stringify(snapshot.logos);
+          ackLogos=JSON.stringify({logos:snapshot.logos,sounds:snapshot.sounds||{}});
           latestVersion=Math.max(latestVersion,ack.version??0);
           lastAssets=ack.assets??lastAssets;
           // La respuesta nunca sustituye un gesto más reciente ni reinicia el reloj.
@@ -1452,7 +1455,7 @@ function buildControls(){
       </div>
 
       <p class="muted small">
-        Reiniciar conserva los nombres y logos.
+        Reiniciar limpia nombres, escudos y contadores. El catálogo de equipos se conserva.
         Los tiempos pedidos muestran la cantidad utilizada.
       </p>
     </section>
@@ -1663,8 +1666,9 @@ function buildControls(){
 
     change(()=>{
       state={
-        names:state.names,
-        logos:state.logos,
+        names:['LOCAL','VISITA'],
+        logos:['',''],
+        sounds:state.sounds||{},
         scores:[0,0],
         fouls:[0,0],
         timeouts:[0,0],
@@ -1764,7 +1768,7 @@ if(id){
   setInterval(()=>render(),100);
 }
 </script>
-<script src="actualizacion-p76.js?v=8"></script>
+<script src="actualizacion-p76.js?v=9"></script>
 </body>
 </html>
 
