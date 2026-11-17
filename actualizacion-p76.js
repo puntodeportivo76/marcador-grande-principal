@@ -45,6 +45,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   style.textContent+='\n.p76-landscape-tools{display:none}#p76-preview-toggle{display:none}\n@media(orientation:landscape) and (min-width:651px) and (max-width:1100px) and (max-height:600px){\n body:not(.display) main{padding:10px;max-width:none}\n body:not(.display) header{padding:8px 12px}\n body:not(.display) #intro{display:none}\n body:not(.display) #links{display:none!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;overflow:visible;margin:8px 0}\n body:not(.display).p76-show-links #links{display:grid!important}\n body:not(.display) .p76-landscape-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n body:not(.display) #p76-links-toggle{min-height:44px;margin:8px 0;font-size:15px}\n body:not(.display) #recovery-note{display:none}\n body:not(.display) #message{min-height:0;margin:4px 0;font-size:12px}\n body:not(.display) #links button,body:not(.display) #links .button{white-space:normal;text-align:center;font-size:13px;padding:10px 6px;min-height:48px;width:100%;min-width:0}\n body:not(.display) #links .small{grid-column:1/-1}\n body:not(.display) #board{display:none}\n body:not(.display).p76-show-preview #board{display:block}\n body:not(.display) #p76-preview-toggle{display:block;width:100%;min-height:44px;margin:8px 0;font-size:15px}\n body:not(.display) #controls{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px;margin-top:12px;align-items:start}\n body:not(.display) #controls>.panel{padding:12px;min-width:0;margin:0}\n body:not(.display) #controls h3{font-size:18px;margin:0 0 12px}\n body:not(.display) #p76-shots,body:not(.display) #p76-possession-panel,body:not(.display) #p76-match-panel{grid-column:span 4}\n body:not(.display) #p76-stats-panel,body:not(.display) #p76-points,body:not(.display) #p76-timing,body:not(.display) #p76-teams-panel{grid-column:span 6}\n body:not(.display) .p76-shot-buttons button{font-size:20px;min-height:62px;padding:12px}\n body:not(.display) #p76-possession{width:100%;min-height:62px;font-size:18px}\n body:not(.display) .p76-match-actions{gap:8px}\n body:not(.display) .p76-match-actions button,body:not(.display) #p76-global-pause{font-size:17px;min-height:62px;padding:12px 6px}\n body:not(.display) #p76-finish{font-size:17px;min-height:52px}\n body:not(.display) #p76-global-note{font-size:12px;line-height:1.4}\n body:not(.display) .p76-stat-controls{grid-template-columns:1fr;gap:10px}\n body:not(.display) .p76-stat-controls>div{padding:10px}\n body:not(.display) .p76-stat-controls .line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:8px 0;margin:0;border-top:1px solid #292929}\n body:not(.display) .p76-stat-controls .line>span:first-child{display:flex;flex-direction:column;gap:4px;font-size:14px}\n body:not(.display) .p76-stat-value{font-size:24px;margin:0;white-space:nowrap}\n body:not(.display) .p76-stat-controls .line>span:last-child{display:flex;gap:8px}\n body:not(.display) .p76-stat-controls [data-field]{width:58px;min-width:58px;min-height:58px;font-size:36px;line-height:1;padding:8px}\n body:not(.display) #p76-points .panel{padding:10px}\n body:not(.display) #p76-points h3{font-size:17px}\n body:not(.display) .points{gap:10px!important;margin:12px 0 0}\n body:not(.display) .points button{font-size:28px;min-height:64px;padding:12px 4px}\n body:not(.display) #p76-timing .bar{display:grid;grid-template-columns:1fr;margin:10px 0}\n body:not(.display) #p76-timing button{min-height:50px;font-size:16px}\n body:not(.display) .time-inputs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px}\n body:not(.display) .time-inputs input{width:100%;font-size:20px;text-align:center}\n body:not(.display) #settime{grid-column:1/-1}\n body:not(.display) #p76-team-config{grid-template-columns:1fr;gap:12px}\n body:not(.display) .p76-team-card select,body:not(.display) .p76-team-card input{min-height:48px;font-size:16px}\n body:not(.display) #controls button{touch-action:manipulation}\n}\n';
   style.textContent+='\n#p76-landscape-nav{display:none}\n.p76-audio-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.p76-audio-card{padding:12px;border:1px solid #343a42;border-radius:10px;min-width:0}.p76-audio-card h4{margin:0 0 12px}.p76-audio-card .bar{gap:8px}.p76-audio-card input{font-size:14px}.p76-audio-card p{overflow-wrap:anywhere}\nbody.display #viewtools:has(#p76-enable-sound:not(:disabled)){opacity:1}\n#p76-enable-sound{border-color:#ff6500}#p76-enable-sound:disabled{opacity:.8}\n@media(max-width:650px){.p76-audio-grid{grid-template-columns:1fr}}\n@media(orientation:landscape) and (min-width:651px) and (max-width:1100px) and (max-height:600px){\n body:not(.display){overflow:hidden}\n body:not(.display) header{height:28px;box-sizing:border-box;padding:4px 10px;font-size:12px}\n body:not(.display) main{padding:6px 10px;height:calc(100dvh - 28px);overflow:hidden}\n body:not(.display) #p76-landscape-nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:0 0 6px}\n body:not(.display) #p76-landscape-nav button{min-width:0;min-height:42px;padding:6px;font-size:14px;font-weight:800;line-height:1.15}\n body:not(.display) #p76-landscape-nav button[aria-pressed=true]{background:#ff6500;color:#080808;border-color:#ff6500}\n body:not(.display) #controls{height:calc(100dvh - 90px);overflow:hidden;margin:0;gap:8px;align-items:start}\n body:not(.display) #controls>.panel{display:none!important;max-height:100%;overflow-y:auto;padding:10px}\n body:not(.display) #controls h3{font-size:17px;margin:0 0 8px}\n body:not(.display) .p76-landscape-tools,body:not(.display) #message,body:not(.display) #recovery-note,body:not(.display) #board{display:none!important}\n body:not(.display)[data-p76-tab=match] #p76-shots,body:not(.display)[data-p76-tab=match] #p76-possession-panel,body:not(.display)[data-p76-tab=match] #p76-match-panel{display:block!important;grid-column:span 4}\n body:not(.display)[data-p76-tab=stats] #p76-stats-panel,body:not(.display)[data-p76-tab=stats] #p76-points{display:block!important;grid-column:span 6}\n body:not(.display)[data-p76-tab=timing] #p76-timing{display:grid!important;grid-column:1/-1;grid-template-columns:1.2fr 1fr 1fr;gap:8px;align-items:start}\n body:not(.display)[data-p76-tab=sounds] #p76-sounds-panel,body:not(.display)[data-p76-tab=teams] #p76-teams-panel{display:block!important;grid-column:1/-1}\n body:not(.display)[data-p76-tab=screen] .p76-landscape-tools{display:grid!important}\n body:not(.display)[data-p76-tab=screen].p76-show-preview #board{display:block!important;height:calc(100dvh - 160px);aspect-ratio:auto}\n body:not(.display)[data-p76-tab=screen].p76-show-links #links{display:grid!important}\n body:not(.display)[data-p76-tab=screen] #controls{display:none}\n body:not(.display) .p76-shot-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n body:not(.display) .p76-shot-buttons button{min-height:54px;width:100%;font-size:17px;line-height:1.15;padding:8px 5px;white-space:normal}\n body:not(.display) #p76-possession{width:50%;min-width:115px;min-height:54px;padding:8px 5px;font-size:16px;line-height:1.15}\n body:not(.display) .p76-match-actions button,body:not(.display) #p76-global-pause{min-height:52px;font-size:16px;padding:7px 4px}\n body:not(.display) #p76-finish{min-height:44px;font-size:16px;margin-top:8px;padding:8px}\n body:not(.display) #p76-global-note{font-size:11px;line-height:1.25;margin-top:7px}\n body:not(.display) .p76-stat-controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}\n body:not(.display) .p76-stat-controls>div{padding:7px}\n body:not(.display) .p76-stat-controls h4{font-size:13px;line-height:1.15;margin:0 0 5px;overflow-wrap:anywhere}\n body:not(.display) .p76-stat-controls .line{gap:4px;padding:6px 0;min-height:49px}\n body:not(.display) .p76-stat-controls .line>span:first-child{font-size:11px;gap:3px;line-height:1.15}\n body:not(.display) .p76-stat-value{font-size:18px;line-height:1.1}\n body:not(.display) .p76-stat-controls .line>span:last-child{gap:4px}\n body:not(.display) .p76-stat-controls [data-field]{width:38px;min-width:38px;min-height:44px;height:44px;font-size:27px;padding:3px;line-height:1}\n body:not(.display) .p76-points-grid{gap:6px}\n body:not(.display) #p76-points .panel{padding:7px;border-radius:10px}\n body:not(.display) #p76-points .panel h3{font-size:14px;margin-bottom:7px}\n body:not(.display) .points{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin:0}\n body:not(.display) .points button{font-size:24px;min-height:50px;padding:5px 2px}\n body:not(.display) #p76-timing h3{grid-column:1/-1}\n body:not(.display) #p76-timing>label{display:none}\n body:not(.display) #p76-timing .time-inputs{grid-column:1;grid-row:2/span 2;gap:6px}\n body:not(.display) #p76-timing .time-inputs input{min-height:44px;font-size:20px;padding:8px}\n body:not(.display) #p76-timing #settime{min-height:44px;font-size:15px}\n body:not(.display) #p76-timing #setperiod{grid-column:2;grid-row:2;min-height:44px;font-size:16px;padding:8px}\n body:not(.display) #p76-timing .bar:has(#next){grid-column:2;grid-row:3;margin:0}\n body:not(.display) #p76-timing .bar:has(#reset){grid-column:3;grid-row:2;margin:0}\n body:not(.display) #p76-timing .bar button{min-height:44px;font-size:15px;padding:8px}\n body:not(.display) #p76-timing>.muted{grid-column:3;grid-row:3;margin:0;font-size:11px;line-height:1.3}\n body:not(.display) #p76-team-config{grid-template-columns:1fr 1fr;gap:10px}\n body:not(.display) #p76-sounds-panel>.muted{margin:0 0 8px;font-size:12px}\n body:not(.display) .p76-audio-card{padding:8px}\n body:not(.display) .p76-audio-card h4{font-size:15px;margin-bottom:8px}\n body:not(.display) .p76-audio-card label{margin:4px 0;font-size:12px}\n body:not(.display) .p76-audio-card input{padding:6px;font-size:12px}\n body:not(.display) .p76-audio-card .bar{display:grid;grid-template-columns:1fr 1fr;margin:8px 0}\n body:not(.display) .p76-audio-card button{min-height:44px;padding:6px;font-size:13px}\n body:not(.display) .p76-audio-card p{font-size:11px;margin:6px 0}\n}\n';
   style.textContent+='\n@media(orientation:landscape) and (min-width:651px) and (max-width:1100px) and (max-height:360px){body:not(.display) #p76-global-note{display:none}body:not(.display) .points button{min-height:44px;font-size:23px}body:not(.display) #controls>.panel{padding:8px}body:not(.display) #controls h3{font-size:16px;margin-bottom:6px}}\n';
+  style.textContent+='\n.p76-audio-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.p76-audio-actions button{min-height:44px;padding:8px;font-size:14px}\n.p76-audio-card p{margin:8px 0 0;font-size:12px;line-height:1.25}\n.p76-team-actions>details{margin-top:14px}\nbody.display #viewtools{left:10px;right:auto;display:flex;gap:5px;flex-direction:row;align-items:center}\nbody.display #viewtools button{font-size:12px;padding:6px 8px;min-height:30px;border-radius:6px}\n@media(orientation:landscape) and (min-width:651px) and (max-width:1100px) and (max-height:600px){\n body:not(.display) #p76-sounds-panel>.muted{font-size:11px;line-height:1.2;margin:0 0 6px}\n body:not(.display) .p76-audio-grid{gap:8px}\n body:not(.display) .p76-audio-card{padding:8px}\n body:not(.display) .p76-audio-card h4{font-size:14px;line-height:1.1;margin:0 0 7px}\n body:not(.display) .p76-audio-actions{gap:6px}\n body:not(.display) .p76-audio-actions button{min-height:44px;padding:5px 3px;font-size:12px;line-height:1.15}\n body:not(.display) .p76-audio-card p{font-size:11px;margin:6px 0 0;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}\n body:not(.display) #p76-team-config{gap:8px}\n body:not(.display) .p76-team-card{display:grid;grid-template-columns:46px minmax(0,1fr);gap:5px 7px;padding:7px}\n body:not(.display) .p76-team-card h4{grid-column:1/-1;font-size:13px;line-height:1.1;margin:0}\n body:not(.display) .p76-team-card select{grid-column:1/-1;min-height:44px;height:44px;padding:6px;font-size:15px;margin:0}\n body:not(.display) .p76-team-row{grid-column:2;grid-row:3;gap:5px}\n body:not(.display) .p76-team-row input{height:44px;min-height:44px;padding:6px;font-size:15px}\n body:not(.display) .p76-team-row button{width:42px;min-height:44px;padding:4px;font-size:20px}\n body:not(.display) .p76-team-footer{grid-column:1;grid-row:3;position:relative;min-height:44px;height:44px;margin:0;display:flex}\n body:not(.display) .p76-config-preview{width:44px;height:44px}\n body:not(.display) .p76-remove{position:absolute;right:-3px;top:-5px;width:23px;height:23px;padding:0;font-size:19px;line-height:1;min-height:23px;border-radius:50%}\n body:not(.display) .p76-team-actions{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:8px;margin-top:7px}\n body:not(.display) #p76-save-teams{min-height:44px;height:44px;padding:7px!important;font-size:15px;margin:0!important}\n body:not(.display) .p76-team-actions>details{margin:0!important}\n body:not(.display) .p76-team-actions summary{display:flex;align-items:center;justify-content:center;min-height:44px;padding:7px;border:1px solid #394656;border-radius:8px;font-size:13px;cursor:pointer;background:#202a37}\n body:not(.display) .p76-team-actions>details[open]{position:fixed;inset:8px;z-index:200;overflow:auto;background:#000;padding:12px;border:2px solid #ff6500;border-radius:12px}\n body:not(.display) .p76-team-actions>details[open]>summary{position:sticky;top:0;border-color:#ff6500;z-index:1}\n body:not(.display)[data-p76-tab=screen] header{display:none}\n body:not(.display)[data-p76-tab=screen] main{position:relative;height:100dvh;padding:5px}\n body:not(.display)[data-p76-tab=screen] #p76-landscape-nav{position:absolute;top:4px;left:5px;right:5px;z-index:30;gap:5px}\n body:not(.display)[data-p76-tab=screen] #p76-landscape-nav button{min-height:30px;font-size:12px;padding:4px}\n body:not(.display)[data-p76-tab=screen] .p76-landscape-tools{position:absolute;top:43px;left:11px;z-index:20;display:flex!important;flex-direction:row;gap:5px;width:auto}\n body:not(.display)[data-p76-tab=screen] #p76-preview-toggle,body:not(.display)[data-p76-tab=screen] #p76-links-toggle{width:auto;min-height:28px;height:28px;margin:0;padding:4px 6px;font-size:11px;border-radius:6px}\n body:not(.display)[data-p76-tab=screen].p76-show-preview #board{position:absolute;top:39px;left:5px;width:calc(100% - 10px);height:calc(100dvh - 44px);margin:0;border-top-width:2px}\n body:not(.display)[data-p76-tab=screen].p76-show-links #links{position:absolute;left:10px;top:78px;width:350px;max-width:80vw;z-index:25;background:#000;border:1px solid #ff6500;border-radius:8px;padding:7px;grid-template-columns:1fr 1fr!important}\n body:not(.display)[data-p76-tab=screen] #links button,body:not(.display)[data-p76-tab=screen] #links .button{min-height:34px;font-size:11px;padding:5px}\n}\n@media(orientation:landscape) and (min-width:651px) and (max-width:1100px) and (max-height:360px){\n body:not(.display) #p76-teams-panel>h3{display:none}\n body:not(.display) .p76-team-card{padding:5px;gap:4px 6px}\n body:not(.display) .p76-team-card h4{font-size:12px}\n body:not(.display) .p76-team-card select,body:not(.display) .p76-team-row input,body:not(.display) .p76-team-row button{height:40px;min-height:40px;font-size:14px}\n body:not(.display) .p76-team-footer{height:40px;min-height:40px}\n body:not(.display) .p76-config-preview{height:40px;width:40px}\n body:not(.display) #p76-save-teams,body:not(.display) .p76-team-actions summary{height:40px;min-height:40px;font-size:13px}\n}\n';
   document.head.append(style);
   const divider=document.createElement('div');divider.className='p76-score-divider';divider.setAttribute('aria-hidden','true');$('stage').append(divider);
   const final=document.createElement('div');final.id='p76-final';final.hidden=true;
@@ -53,14 +54,16 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   const alarm=document.createElement('div');alarm.id='p76-period-alarm';alarm.setAttribute('aria-hidden','true');document.body.append(alarm);
   const baseChange=change;
   change=function(mutator){
+    const due=expiredClock();
     const observed=state&&state.running?(state.mainAlarmAt||state.stamp+state.seconds*1000):null;
     return baseChange(()=>{
+      if(due)freezeExpiredClock(due);
       const beforeRunning=state.running,beforeSeconds=state.seconds,beforeDeadline=state.mainAlarmAt||observed;
       const oldPeriod=state.period;
       mutator();
       if(!state.running&&!state.finished&&!state.globalPause?.active&&state.seconds!==beforeSeconds)state.periodStarted=false;
       if(state.period!==oldPeriod){
-        state.fouls=[0,0];state.timeouts=[0,0];state.statLocks=null;state.globalPause=null;state.periodStarted=false;
+        state.fouls=[0,0];state.timeouts=[0,0];state.statLocks=null;state.globalPause=null;state.periodStarted=false;state.shotAlarm=null;state.periodAlarm=null;
         state.running=false;state.shot={...state.shot,seconds:24,running:false,stamp:clockNow()};
       }
       for(const [field,max] of [['fouls',5],['timeouts',2]]){
@@ -76,6 +79,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   };
   function shotSet(seconds,alternate){
     if(state.globalPause?.active||state.finished||!startedPeriod()||remaining()<=0)return;
+    state.shotAlarm=null;
     const current=state.shot.team;
     state.shot={team:alternate?(current===0?1:0):(current===null?0:current),seconds,running:true,stamp:clockNow()};
   }
@@ -101,6 +105,26 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       state.globalPause={active:true,mainWasRunning,shotWasRunning};
     }
   }
+  function expiredClock(now=clockNow()){
+    if(!state||state.finished||state.globalPause?.active)return null;
+    const mainEnd=state.running?(state.mainAlarmAt||state.stamp+state.seconds*1000):Infinity;
+    const shotEnd=state.shot?.running&&state.shot.team!==null?state.shot.stamp+state.shot.seconds*1000:Infinity;
+    const at=Math.min(mainEnd,shotEnd);if(!Number.isFinite(at)||now<at)return null;
+    return {kind:mainEnd<=shotEnd?'main':'shot',at};
+  }
+  function freezeExpiredClock(expiry){
+    if(!expiry||state.finished||state.globalPause?.active)return;
+    const mainWasRunning=state.running;
+    const mainEnd=state.mainAlarmAt||state.stamp+state.seconds*1000;
+    const shotEnd=state.shot.stamp+state.shot.seconds*1000;
+    const mainSeconds=state.running?Math.max(0,(mainEnd-expiry.at)/1000):state.seconds;
+    const shotSeconds=state.shot.running?Math.max(0,Math.min(24,(shotEnd-expiry.at)/1000)):state.shot.seconds;
+    state.seconds=mainSeconds;state.running=false;state.stamp=expiry.at;state.mainAlarmAt=null;
+    state.shot={...state.shot,seconds:shotSeconds,running:false,stamp:expiry.at};
+    state.globalPause={active:true,mainWasRunning:mainWasRunning&&mainSeconds>0,shotWasRunning:false,reason:expiry.kind+'-expired'};
+    if(expiry.kind==='shot')state.shotAlarm={at:expiry.at,team:state.shot.team};
+    else state.periodAlarm={at:expiry.at};
+  }
   function adjustStat(i,field,delta,max){
     if(state.finished||state.statLocks?.[field]?.[i]||state[field][i]>=max||(delta<0&&state[field][i]<=0))return;
     if(!state.globalPause?.active)toggleGlobalPause();
@@ -112,7 +136,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   function startPeriod(){
     if(state.finished||(startedPeriod()&&remaining()>0))return;
     if(state.seconds<=0)state.seconds=state.period>4?300:600;
-    state.periodStarted=true;state.globalPause=null;state.running=true;state.stamp=clockNow();state.mainAlarmAt=clockNow()+state.seconds*1000;
+    state.periodStarted=true;state.globalPause=null;state.periodAlarm=null;state.shotAlarm=null;state.running=true;state.stamp=clockNow();state.mainAlarmAt=clockNow()+state.seconds*1000;
   }
   function finishMatch(){
     if(state.finished)return;
@@ -153,7 +177,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       $('p76-global-note').textContent=ended?'Partido terminado. Reinicia el partido para comenzar otro.':!started?'Pulsa Iniciar reloj para habilitar Detener / Continuar.':paused?'Pausa activa. Se conservan los tiempos y se bloquean Cambiar a 24 y Cambiar a 14.':'Detiene ambos relojes. Al continuar se reanudan los que estaban contando.';
     }
     renderFinal();
-    for(const kind of ['main','shot']){const label=$('p76-audio-label-'+kind);if(label)label.textContent=state.sounds?.[kind+'Name']||'Bocina predeterminada';}
+    for(const kind of ['main','shot']){const label=$('p76-audio-label-'+kind);if(label)label.textContent=state.sounds?.[kind+'Name']||'Bocina estilo NBA (sintetizada)';}
     for(let i=0;i<2;i++){
       const score=$('s'+i);if(score){const digits=String(state.scores[i]).length;score.style.fontSize=digits>=4?'105px':digits===3?'145px':'180px';}
       const label=$('p76-stat-team'+i);if(label)label.textContent=state.names[i];
@@ -169,15 +193,15 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   function inAlertWindow(running,end,now){return running&&now>=end&&now<end+5000;}
   function updateMainAlarm(){
     if(!state)return;
-    const end=state.mainAlarmAt||state.stamp+state.seconds*1000;
-    const expired=inAlertWindow(state.running,end,clockNow());
+    const end=state.periodAlarm?.at||state.mainAlarmAt||state.stamp+state.seconds*1000;
+    const expired=inAlertWindow(!!state.periodAlarm||state.running,end,clockNow());
     alarm.classList.toggle('active',expired);
     $('board').classList.toggle('p76-period-warning',expired&&!view);
   }
   renderShot=function(){
     if(!state)return;
     const shot=state.shot,now=clockNow(),value=Math.ceil(shotRemaining());
-    const expired=inAlertWindow(shot.running,shot.stamp+shot.seconds*1000,now);
+    const expired=inAlertWindow(!!state.shotAlarm||shot.running,state.shotAlarm?.at||shot.stamp+shot.seconds*1000,now);
     for(let i=0;i<2;i++){
       const selected=shot.team===i,box=$('shot'+i);
       box.textContent=selected?value:24;
@@ -201,8 +225,8 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     try{await audioContext.resume();audioUnlocked=audioContext.state==='running';}catch{audioUnlocked=false;}
     if(audioUnlocked){
       const now=clockNow();
-      if(state?.running&&remaining()<=0)sounded.add('main:'+state.mainAlarmAt);
-      if(state?.shot?.running&&shotRemaining()<=0)sounded.add('shot:'+state.shot.team+':'+state.shot.stamp);
+      if(state&&(state.running||state.periodAlarm)&&remaining()<=0)sounded.add('main:'+(state.periodAlarm?.at||state.mainAlarmAt));
+      if(state&&(state.shot?.running||state.shotAlarm)&&shotRemaining()<=0)sounded.add('shot:'+state.shot.team+':'+(state.shotAlarm?.at||state.shot.stamp+state.shot.seconds*1000));
     }
     const b=$('p76-enable-sound');if(b){b.textContent=audioUnlocked?'Sonido activado':'Activar sonido';b.disabled=audioUnlocked;}
     return audioUnlocked;
@@ -215,24 +239,29 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       customAudio=new Audio(src);customAudio.volume=1;customAudio.play().catch(()=>message('Pulsa Activar sonido en esta pantalla.'));
       const playing=customAudio;setTimeout(()=>{playing.pause();},5000);return;
     }
-    const now=audioContext.currentTime,duration=kind==='main'?1.5:1;
-    const gain=audioContext.createGain();gain.gain.setValueAtTime(.001,now);gain.gain.exponentialRampToValueAtTime(.2,now+.025);gain.gain.setValueAtTime(.2,now+duration-.08);gain.gain.exponentialRampToValueAtTime(.001,now+duration);gain.connect(audioContext.destination);
-    for(const frequency of [220,330]){const oscillator=audioContext.createOscillator();oscillator.type='sawtooth';oscillator.frequency.value=frequency;oscillator.connect(gain);oscillator.start(now);oscillator.stop(now+duration);}
+    const now=audioContext.currentTime,duration=kind==='main'?1.8:.8;
+    const gain=audioContext.createGain(),filter=audioContext.createBiquadFilter();
+    filter.type='lowpass';filter.frequency.value=kind==='main'?1600:4200;filter.Q.value=.7;
+    gain.gain.setValueAtTime(.001,now);gain.gain.exponentialRampToValueAtTime(kind==='main'?.16:.12,now+.015);gain.gain.setValueAtTime(kind==='main'?.16:.12,now+duration-.06);gain.gain.exponentialRampToValueAtTime(.001,now+duration);gain.connect(filter);filter.connect(audioContext.destination);
+    const frequencies=kind==='main'?[220,330,440]:[880,1760];
+    frequencies.forEach((frequency,i)=>{const oscillator=audioContext.createOscillator();oscillator.type=kind==='main'?'sawtooth':'square';oscillator.frequency.value=frequency;oscillator.detune.value=i%2?3:-3;oscillator.connect(gain);oscillator.start(now);oscillator.stop(now+duration);});
   }
+
   function updateSoundAlarms(){
     if(!state||state.finished||!audioUnlocked)return;
-    const now=clockNow(),mainEnd=state.mainAlarmAt||state.stamp+state.seconds*1000;
-    const alarms=[['main',state.running,mainEnd,'main:'+state.mainAlarmAt],['shot',state.shot.running,state.shot.stamp+state.shot.seconds*1000,'shot:'+state.shot.team+':'+state.shot.stamp]];
+    const now=clockNow(),mainEnd=state.periodAlarm?.at||state.mainAlarmAt||state.stamp+state.seconds*1000,shotEnd=state.shotAlarm?.at||state.shot.stamp+state.shot.seconds*1000;
+    const alarms=[['main',!!state.periodAlarm||state.running,mainEnd,'main:'+mainEnd],['shot',!!state.shotAlarm||state.shot.running,shotEnd,'shot:'+state.shot.team+':'+shotEnd]];
     for(const [kind,running,end,id] of alarms){if(inAlertWindow(running,end,now)&&!sounded.has(id)){sounded.add(id);playHorn(kind);}}
     if(sounded.size>100){const last=[...sounded].slice(-50);sounded.clear();last.forEach(id=>sounded.add(id));}
   }
   function installSounds(){
     const section=document.createElement('section');section.className='panel wide';section.id='p76-sounds-panel';
-    section.innerHTML='<h3>Sonidos</h3><p class="muted small">Activa el sonido en la pantalla del tablero. Puedes cambiar cada bocina con un archivo de audio de hasta 300 KB.</p><div class="p76-audio-grid" id="p76-audio-grid"></div>';
+    section.innerHTML='<h3>Sonidos</h3><p class="muted small">Bocinas estilo NBA, sintetizadas. Puedes cargar otro audio (máx. 300 KB).</p><div class="p76-audio-grid" id="p76-audio-grid"></div>';
     for(const [kind,label] of [['main','Fin de período'],['shot','Fin de 24 / 14 segundos']]){
       const box=document.createElement('div');box.className='p76-audio-card';
-      box.innerHTML='<h4>'+label+'</h4><label>Subir sonido<input type="file" accept="audio/*" id="p76-audio-'+kind+'"></label><div class="bar"><button id="p76-test-'+kind+'">Probar bocina</button><button id="p76-default-'+kind+'">Usar predeterminada</button></div><p class="muted small" id="p76-audio-label-'+kind+'"></p>';
+      box.innerHTML='<h4>'+label+'</h4><input type="file" accept="audio/*" id="p76-audio-'+kind+'" hidden><div class="p76-audio-actions"><button id="p76-upload-audio-'+kind+'">Cargar audio</button><button id="p76-test-'+kind+'">Probar</button><button id="p76-default-'+kind+'">Restablecer</button></div><p class="muted small" id="p76-audio-label-'+kind+'"></p>';
       section.querySelector('#p76-audio-grid').append(box);
+      box.querySelector('#p76-upload-audio-'+kind).onclick=()=>box.querySelector('#p76-audio-'+kind).click();
       box.querySelector('#p76-test-'+kind).onclick=async()=>{if(await unlockAudio())playHorn(kind);};
       box.querySelector('#p76-default-'+kind).onclick=()=>change(()=>{state.sounds={...state.sounds,[kind]:null,[kind+'Name']:null};});
       box.querySelector('#p76-audio-'+kind).onchange=async event=>{
@@ -251,7 +280,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     const nav=document.createElement('nav');nav.id='p76-landscape-nav';nav.setAttribute('aria-label','Secciones del control');
     for(const [tab,label] of [['match','Partido'],['stats','Faltas / puntos'],['timing','Reloj'],['sounds','Sonidos'],['teams','Equipos'],['screen','Pantalla']]){
       const b=document.createElement('button');b.textContent=label;b.dataset.tab=tab;b.setAttribute('aria-pressed',String(tab==='match'));
-      b.onclick=()=>{document.body.dataset.p76Tab=tab;nav.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',String(button===b)));fitBoard();};nav.append(b);
+      b.onclick=()=>{document.body.dataset.p76Tab=tab;if(tab==='screen'){document.body.classList.add('p76-show-preview');const toggle=$('p76-preview-toggle');if(toggle){toggle.textContent='Ocultar tablero';toggle.setAttribute('aria-expanded','true');}}nav.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',String(button===b)));fitBoard();};nav.append(b);
     }
     document.body.dataset.p76Tab='match';$('links').before(nav);
   }
@@ -399,11 +428,12 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     }
     $('resetfouls').remove();
     $('p76-start').onclick=()=>{unlockAudio();change(startPeriod);};
-    $('p76-global-pause').onclick=()=>{if(startedPeriod()&&!state.finished&&remaining()>0)change(toggleGlobalPause);};
+    $('p76-global-pause').onclick=()=>{const due=expiredClock();if(due){change(()=>freezeExpiredClock(due));return;}if(startedPeriod()&&!state.finished&&remaining()>0)change(toggleGlobalPause);};
     $('p76-finish').onclick=()=>{if(confirm('¿Terminar el partido y mostrar el marcador final?'))change(finishMatch);};
     const timing=sectionWith('Reloj y período');timing.id='p76-timing';$('toggle').remove();
     const points=document.createElement('section');points.className='panel wide';points.id='p76-points';points.innerHTML='<h3>Puntaje</h3><div class="p76-points-grid" id="p76-points-grid"></div>';
     $('controls').append(points);$('p76-points-grid').append($('team-control0'),$('team-control1'));
+    const teamActions=document.createElement('div');teamActions.className='p76-team-actions';teamActions.append($('p76-save-teams'),teams.querySelector('details'));teams.append(teamActions);
     const sounds=installSounds();installLandscapeNav();
     const ordered=[shots,possession,pauseSection,statsSection,points,timing,sounds,teams];
     ordered.filter(Boolean).forEach(section=>$('controls').append(section));
@@ -416,7 +446,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       if(!confirm('¿Reiniciar el partido? Se borrarán nombres, escudos, puntos, faltas y tiempos de este encuentro. El catálogo se conserva.'))return;
       change(()=>{
         const sounds=state.sounds||{};
-        state={names:['LOCAL','VISITA'],logos:['',''],sounds,scores:[0,0],fouls:[0,0],timeouts:[0,0],period:1,seconds:600,running:false,stamp:clockNow(),possession:null,shot:freshShot(),finished:false,finalResult:null,globalPause:null,periodStarted:false,statLocks:null,mainAlarmAt:null};
+        state={names:['LOCAL','VISITA'],logos:['',''],sounds,scores:[0,0],fouls:[0,0],timeouts:[0,0],period:1,seconds:600,running:false,stamp:clockNow(),possession:null,shot:freshShot(),finished:false,finalResult:null,globalPause:null,periodStarted:false,statLocks:null,mainAlarmAt:null,shotAlarm:null,periodAlarm:null};
         for(let i=0;i<2;i++){drafts[i]={name:state.names[i],logo:''};$('p76-team-name'+i).value=state.names[i];$('p76-catalog'+i).value='';previewDraft(i);}
         $('minutes').value='10';$('seconds').value='0';$('setperiod').value='1';sounded.clear();
       });
@@ -426,7 +456,14 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     updateCatalog();connectCatalog();
   }
   const baseRender=render;
-  render=function(){baseRender();syncGlobalUI();};
+  render=function(){
+    const expiry=expiredClock();
+    if(expiry){
+      if(key){change(()=>freezeExpiredClock(expiry));return;}
+      freezeExpiredClock(expiry);
+    }
+    baseRender();syncGlobalUI();
+  };
   const baseBuild=buildControls;
   buildControls=function(){baseBuild();installUI();};
   installUI();render();
