@@ -641,6 +641,9 @@ let queue=Promise.resolve();
 let clockOffset=0,bestClockRTT=Infinity;
 function clockNow(){return Date.now()+clockOffset;}
 let loading=false;
+const commandClient=crypto.randomUUID();
+let directSocket=null,socketReady=false,socketRetry=null,socketPing=null,socketLastSeen=0;
+const socketWaiters=new Map();
 let liveStream=null,streamHealthy=false,lastStreamEvent=0;
 let needFull=false,clockProbed=false;
 let lastAssets=null,ackLogos=null,latestVersion=-1;
@@ -1130,8 +1133,50 @@ function acceptState(data,full=false){
   if(full){lastAssets=incomingAssets;ackLogos=JSON.stringify(state.logos);}
   connected=true;
 }
+function connectSocket(){
+  if(!id||view||directSocket||!window.WebSocket)return;
+  try{
+    const ws=new WebSocket(API.replace(/^https:/,'wss:').replace(/^http:/,'ws:')+'/api/socket/'+id);directSocket=ws;
+    ws.onopen=()=>ws.send(JSON.stringify(key?{type:'auth',key}:{type:'watch'}));
+    ws.onmessage=event=>{
+      try{
+        const msg=JSON.parse(event.data);socketLastSeen=Date.now();
+        if(msg.type==='ready'){
+          socketReady=true;
+          $('status').textContent='● CONEXIÓN DIRECTA';
+
+          socketPing=setInterval(()=>{if(ws.readyState===1)ws.send(JSON.stringify({type:'ping'}));},5000);
+        }
+        if(msg.type==='state'&&view){acceptState(msg.data);render();}
+        if(msg.type==='ack'){
+          const waiter=socketWaiters.get(msg.requestId);if(!waiter)return;
+          socketWaiters.delete(msg.requestId);clearTimeout(waiter.timer);
+          const rtt=Date.now()-waiter.sent;
+          if(Number.isFinite(msg._p76ServerNow)&&rtt<bestClockRTT){bestClockRTT=rtt;clockOffset=msg._p76ServerNow-(waiter.sent+rtt/2);}
+          if(msg.ok)waiter.resolve(msg);else waiter.reject(new Error(msg.error||'No se pudo guardar'));
+        }
+      }catch{}
+    };
+    const offline=()=>{
+      if(directSocket!==ws)return;
+      socketReady=false;directSocket=null;clearInterval(socketPing);socketPing=null;
+      for(const [id,waiter] of socketWaiters){clearTimeout(waiter.timer);waiter.reject(new Error('Reconectando'));socketWaiters.delete(id);}
+      connectLive();if(!socketRetry)socketRetry=setTimeout(()=>{socketRetry=null;connectSocket();},5000);
+    };
+    ws.onclose=offline;ws.onerror=()=>{try{ws.close();}catch{}offline();};
+  }catch{connectLive();}
+}
+function sendDirect(snapshot){
+  if(!socketReady||directSocket?.readyState!==1)return null;
+  return new Promise((resolve,reject)=>{
+    const requestId=snapshot._p76Command.client+':'+snapshot._p76Command.sequence;
+    const timer=setTimeout(()=>{socketWaiters.delete(requestId);try{directSocket?.close();}catch{}reject(new Error('Reconectando'));},3000);
+    socketWaiters.set(requestId,{resolve,reject,timer,sent:Date.now()});
+    try{directSocket.send(JSON.stringify({type:'command',requestId,state:snapshot}));}catch(error){clearTimeout(timer);socketWaiters.delete(requestId);reject(error);}
+  });
+}
 function connectLive(){
-  if(!view||liveStream||!window.EventSource)return;
+  if(!view||socketReady||liveStream||!window.EventSource)return;
   liveStream=new EventSource(API+'/api/stream/'+id);
   liveStream.addEventListener('state',event=>{
     try{
@@ -1144,6 +1189,7 @@ function connectLive(){
 }
 async function load(forceFull=false){
   if(saving||pendingSave||loading)return;
+  if(!forceFull&&socketReady&&Date.now()-socketLastSeen<12000)return;
   if(!forceFull&&streamHealthy&&Date.now()-lastStreamEvent<12000)return;
   loading=true;
   const started=revision;
@@ -1155,7 +1201,7 @@ async function load(forceFull=false){
     if(saving||started!==revision)return;
 
     acceptState(data,full);
-    connectLive();
+    connectSocket();connectLive();
     if(!clockProbed){clockProbed=true;(async()=>{for(let i=0;i<3;i++){try{await request('/api/time');}catch{break;}}})();}
     connected=true;
 
@@ -1187,7 +1233,7 @@ function change(mutator){
   state.stamp=clockNow();
   mutator();
   render();
-  pendingSave=JSON.parse(JSON.stringify(state));
+  pendingSave={...JSON.parse(JSON.stringify(state)),_p76Command:{client:commandClient,sequence:revision}};
   saveControl(id,key,state);
   message('Enviando cambio…');
   return flushChanges();
@@ -1207,7 +1253,10 @@ function flushChanges(){
           const sending={...snapshot};
           // Los escudos solo viajan cuando cambian, no al iniciar o detener relojes.
           if(JSON.stringify(sending.logos)===ackLogos)delete sending.logos;
-          const ack=await request('/api/game/'+id,{
+          const direct=sendDirect(sending);
+          let ack;
+          try{ack=direct?await direct:null;}catch{}
+          if(!ack)ack=await request('/api/game/'+id,{
             method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},
             body:JSON.stringify({key,state:sending})
           });
@@ -1217,7 +1266,7 @@ function flushChanges(){
           lastAssets=ack.assets??lastAssets;
           // La respuesta nunca sustituye un gesto más reciente ni reinicia el reloj.
           connected=true;
-          $('status').textContent='● CONECTADO';
+          $('status').textContent=socketReady?'● CONEXIÓN DIRECTA':'● CONECTADO';
         }catch(error){
           if(!pendingSave)pendingSave=snapshot;
           connected=false;
@@ -1624,7 +1673,13 @@ function buildControls(){
         running:false,
         stamp:clockNow(),
         possession:null,
-        shot:freshShot()
+        shot:freshShot(),
+        finished:false,
+        finalResult:null,
+        globalPause:null,
+        periodStarted:false,
+        statLocks:null,
+        mainAlarmAt:null
       };
 
       $('setperiod').value='1';
@@ -1709,7 +1764,7 @@ if(id){
   setInterval(()=>render(),100);
 }
 </script>
-<script src="actualizacion-p76.js?v=7"></script>
+<script src="actualizacion-p76.js?v=8"></script>
 </body>
 </html>
 
