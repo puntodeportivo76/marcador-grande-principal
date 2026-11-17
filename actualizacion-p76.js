@@ -47,6 +47,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   style.textContent+='\n@media(orientation:landscape) and (min-width:651px) and (max-width:1100px) and (max-height:360px){body:not(.display) #p76-global-note{display:none}body:not(.display) .points button{min-height:44px;font-size:23px}body:not(.display) #controls>.panel{padding:8px}body:not(.display) #controls h3{font-size:16px;margin-bottom:6px}}\n';
   style.textContent+='\n.p76-audio-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.p76-audio-actions button{min-height:44px;padding:8px;font-size:14px}\n.p76-audio-card p{margin:8px 0 0;font-size:12px;line-height:1.25}\n.p76-team-actions>details{margin-top:14px}\nbody.display #viewtools{left:10px;right:auto;display:flex;gap:5px;flex-direction:row;align-items:center}\nbody.display #viewtools button{font-size:12px;padding:6px 8px;min-height:30px;border-radius:6px}\n@media(orientation:landscape) and (min-width:651px) and (max-width:1100px) and (max-height:600px){\n body:not(.display) #p76-sounds-panel>.muted{font-size:11px;line-height:1.2;margin:0 0 6px}\n body:not(.display) .p76-audio-grid{gap:8px}\n body:not(.display) .p76-audio-card{padding:8px}\n body:not(.display) .p76-audio-card h4{font-size:14px;line-height:1.1;margin:0 0 7px}\n body:not(.display) .p76-audio-actions{gap:6px}\n body:not(.display) .p76-audio-actions button{min-height:44px;padding:5px 3px;font-size:12px;line-height:1.15}\n body:not(.display) .p76-audio-card p{font-size:11px;margin:6px 0 0;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}\n body:not(.display) #p76-team-config{gap:8px}\n body:not(.display) .p76-team-card{display:grid;grid-template-columns:46px minmax(0,1fr);gap:5px 7px;padding:7px}\n body:not(.display) .p76-team-card h4{grid-column:1/-1;font-size:13px;line-height:1.1;margin:0}\n body:not(.display) .p76-team-card select{grid-column:1/-1;min-height:44px;height:44px;padding:6px;font-size:15px;margin:0}\n body:not(.display) .p76-team-row{grid-column:2;grid-row:3;gap:5px}\n body:not(.display) .p76-team-row input{height:44px;min-height:44px;padding:6px;font-size:15px}\n body:not(.display) .p76-team-row button{width:42px;min-height:44px;padding:4px;font-size:20px}\n body:not(.display) .p76-team-footer{grid-column:1;grid-row:3;position:relative;min-height:44px;height:44px;margin:0;display:flex}\n body:not(.display) .p76-config-preview{width:44px;height:44px}\n body:not(.display) .p76-remove{position:absolute;right:-3px;top:-5px;width:23px;height:23px;padding:0;font-size:19px;line-height:1;min-height:23px;border-radius:50%}\n body:not(.display) .p76-team-actions{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:8px;margin-top:7px}\n body:not(.display) #p76-save-teams{min-height:44px;height:44px;padding:7px!important;font-size:15px;margin:0!important}\n body:not(.display) .p76-team-actions>details{margin:0!important}\n body:not(.display) .p76-team-actions summary{display:flex;align-items:center;justify-content:center;min-height:44px;padding:7px;border:1px solid #394656;border-radius:8px;font-size:13px;cursor:pointer;background:#202a37}\n body:not(.display) .p76-team-actions>details[open]{position:fixed;inset:8px;z-index:200;overflow:auto;background:#000;padding:12px;border:2px solid #ff6500;border-radius:12px}\n body:not(.display) .p76-team-actions>details[open]>summary{position:sticky;top:0;border-color:#ff6500;z-index:1}\n body:not(.display)[data-p76-tab=screen] header{display:none}\n body:not(.display)[data-p76-tab=screen] main{position:relative;height:100dvh;padding:5px}\n body:not(.display)[data-p76-tab=screen] #p76-landscape-nav{position:absolute;top:4px;left:5px;right:5px;z-index:30;gap:5px}\n body:not(.display)[data-p76-tab=screen] #p76-landscape-nav button{min-height:30px;font-size:12px;padding:4px}\n body:not(.display)[data-p76-tab=screen] .p76-landscape-tools{position:absolute;top:43px;left:11px;z-index:20;display:flex!important;flex-direction:row;gap:5px;width:auto}\n body:not(.display)[data-p76-tab=screen] #p76-preview-toggle,body:not(.display)[data-p76-tab=screen] #p76-links-toggle{width:auto;min-height:28px;height:28px;margin:0;padding:4px 6px;font-size:11px;border-radius:6px}\n body:not(.display)[data-p76-tab=screen].p76-show-preview #board{position:absolute;top:39px;left:5px;width:calc(100% - 10px);height:calc(100dvh - 44px);margin:0;border-top-width:2px}\n body:not(.display)[data-p76-tab=screen].p76-show-links #links{position:absolute;left:10px;top:78px;width:350px;max-width:80vw;z-index:25;background:#000;border:1px solid #ff6500;border-radius:8px;padding:7px;grid-template-columns:1fr 1fr!important}\n body:not(.display)[data-p76-tab=screen] #links button,body:not(.display)[data-p76-tab=screen] #links .button{min-height:34px;font-size:11px;padding:5px}\n}\n@media(orientation:landscape) and (min-width:651px) and (max-width:1100px) and (max-height:360px){\n body:not(.display) #p76-teams-panel>h3{display:none}\n body:not(.display) .p76-team-card{padding:5px;gap:4px 6px}\n body:not(.display) .p76-team-card h4{font-size:12px}\n body:not(.display) .p76-team-card select,body:not(.display) .p76-team-row input,body:not(.display) .p76-team-row button{height:40px;min-height:40px;font-size:14px}\n body:not(.display) .p76-team-footer{height:40px;min-height:40px}\n body:not(.display) .p76-config-preview{height:40px;width:40px}\n body:not(.display) #p76-save-teams,body:not(.display) .p76-team-actions summary{height:40px;min-height:40px;font-size:13px}\n}\n';
   document.head.append(style);
+  style.textContent+='\n@media(orientation:landscape) and (min-width:651px) and (max-width:1100px) and (max-height:600px){body:not(.display)[data-p76-tab=screen] .p76-landscape-tools{left:8px;top:45px;width:116px;flex-direction:column;align-items:stretch}body:not(.display)[data-p76-tab=screen] #p76-links-toggle,body:not(.display)[data-p76-tab=screen] #p76-preview-toggle{width:116px;height:auto;min-height:36px;white-space:normal}body:not(.display)[data-p76-tab=screen].p76-show-preview #board{left:132px;top:41px;width:calc(100% - 140px);height:calc(100dvh - 49px);border:1px solid #ff6500;border-radius:10px;box-sizing:border-box}body:not(.display)[data-p76-tab=screen].p76-show-links #links{top:126px;left:8px}}\n';
   const divider=document.createElement('div');divider.className='p76-score-divider';divider.setAttribute('aria-hidden','true');$('stage').append(divider);
   const final=document.createElement('div');final.id='p76-final';final.hidden=true;
   final.innerHTML='<img class="p76-final-brand" alt="Punto Deportivo 76"><div class="p76-final-title">FINAL DEL PARTIDO</div><div class="p76-final-frame"><div class="p76-final-team"><img id="p76-final-logo0" alt="Escudo local"><div class="p76-final-name" id="p76-final-name0"></div></div><div class="p76-final-scores"><span id="p76-final-score0"></span><span class="p76-final-dash">–</span><span id="p76-final-score1"></span></div><div class="p76-final-team"><img id="p76-final-logo1" alt="Escudo visitante"><div class="p76-final-name" id="p76-final-name1"></div></div></div><div class="p76-final-footer">PUNTO DEPORTIVO 76 · <b>STREAMING</b></div>';
@@ -59,12 +60,12 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     return baseChange(()=>{
       if(due)freezeExpiredClock(due);
       const beforeRunning=state.running,beforeSeconds=state.seconds,beforeDeadline=state.mainAlarmAt||observed;
-      const oldPeriod=state.period;
+      const oldPeriod=state.period,oldShotTeam=state.shot.team,oldPossession=state.possession;
       mutator();
       if(!state.running&&!state.finished&&!state.globalPause?.active&&state.seconds!==beforeSeconds)state.periodStarted=false;
       if(state.period!==oldPeriod){
         state.fouls=[0,0];state.timeouts=[0,0];state.statLocks=null;state.globalPause=null;state.periodStarted=false;state.shotAlarm=null;state.periodAlarm=null;
-        state.running=false;state.shot={...state.shot,seconds:24,running:false,stamp:clockNow()};
+        state.running=false;state.shot={team:oldShotTeam??oldPossession??0,seconds:24,running:false,stamp:clockNow()};state.possession=oldPossession;
       }
       for(const [field,max] of [['fouls',5],['timeouts',2]]){
         state[field]=state[field].map(v=>Math.max(0,Math.min(max,v)));
@@ -92,7 +93,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       state.stamp=now;
       state.mainAlarmAt=state.running?now+state.seconds*1000:null;
       state.shot={...state.shot,running:!!pause.shotWasRunning&&state.shot.team!==null&&state.shot.seconds>0,stamp:now};
-      state.globalPause=null;
+      state.globalPause=null;state.shotAlarm=null;
     }else{
       const mainWasRunning=state.running;
       const shotWasRunning=state.shot.running&&state.shot.team!==null&&shotRemaining()>0;
@@ -122,8 +123,8 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     state.seconds=mainSeconds;state.running=false;state.stamp=expiry.at;state.mainAlarmAt=null;
     state.shot={...state.shot,seconds:shotSeconds,running:false,stamp:expiry.at};
     state.globalPause={active:true,mainWasRunning:mainWasRunning&&mainSeconds>0,shotWasRunning:false,reason:expiry.kind+'-expired'};
-    if(expiry.kind==='shot')state.shotAlarm={at:expiry.at,team:state.shot.team};
-    else state.periodAlarm={at:expiry.at};
+    if(expiry.kind==='shot'){const previous=state.shot.team;state.shotAlarm={at:expiry.at,team:previous};state.shot={team:previous===0?1:0,seconds:24,running:false,stamp:expiry.at};state.possession=state.shot.team;state.globalPause.shotWasRunning=true;}
+    else {state.periodAlarm={at:expiry.at};state.shotAlarm=null;}
   }
   function adjustStat(i,field,delta,max){
     if(state.finished||state.statLocks?.[field]?.[i]||state[field][i]>=max||(delta<0&&state[field][i]<=0))return;
@@ -136,7 +137,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   function startPeriod(){
     if(state.finished||(startedPeriod()&&remaining()>0))return;
     if(state.seconds<=0)state.seconds=state.period>4?300:600;
-    state.periodStarted=true;state.globalPause=null;state.periodAlarm=null;state.shotAlarm=null;state.running=true;state.stamp=clockNow();state.mainAlarmAt=clockNow()+state.seconds*1000;
+    state.periodStarted=true;state.globalPause=null;state.periodAlarm=null;state.shotAlarm=null;state.running=true;state.stamp=clockNow();state.mainAlarmAt=state.stamp+state.seconds*1000;state.shot={team:state.shot.team??state.possession??0,seconds:24,running:true,stamp:state.stamp};state.possession=state.shot.team;
   }
   function finishMatch(){
     if(state.finished)return;
@@ -206,7 +207,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       const selected=shot.team===i,box=$('shot'+i);
       box.textContent=selected?value:24;
       box.classList.toggle('active',selected);box.classList.toggle('inactive',!selected);box.classList.remove('expired');
-      box.classList.toggle('p76-shot-alarm',selected&&expired);
+      box.classList.toggle('p76-shot-alarm',expired&&(state.shotAlarm?state.shotAlarm.team===i:selected));
       box.setAttribute('aria-disabled',String(!selected));
       box.setAttribute('aria-label',state.names[i]+': '+(selected?value:24)+' segundos');
     }
@@ -226,7 +227,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     if(audioUnlocked){
       const now=clockNow();
       if(state&&(state.running||state.periodAlarm)&&remaining()<=0)sounded.add('main:'+(state.periodAlarm?.at||state.mainAlarmAt));
-      if(state&&(state.shot?.running||state.shotAlarm)&&shotRemaining()<=0)sounded.add('shot:'+state.shot.team+':'+(state.shotAlarm?.at||state.shot.stamp+state.shot.seconds*1000));
+      if(state&&(state.shot?.running||state.shotAlarm)&&shotRemaining()<=0)sounded.add('shot:'+Math.round(state.shotAlarm?.at||state.shot.stamp+state.shot.seconds*1000));
     }
     const b=$('p76-enable-sound');if(b){b.textContent=audioUnlocked?'Sonido activado':'Activar sonido';b.disabled=audioUnlocked;}
     return audioUnlocked;
@@ -248,9 +249,9 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   }
 
   function updateSoundAlarms(){
-    if(!state||state.finished||!audioUnlocked)return;
+    if(!state||state.finished||!audioUnlocked||!view)return;
     const now=clockNow(),mainEnd=state.periodAlarm?.at||state.mainAlarmAt||state.stamp+state.seconds*1000,shotEnd=state.shotAlarm?.at||state.shot.stamp+state.shot.seconds*1000;
-    const alarms=[['main',!!state.periodAlarm||state.running,mainEnd,'main:'+mainEnd],['shot',!!state.shotAlarm||state.shot.running,shotEnd,'shot:'+state.shot.team+':'+shotEnd]];
+    const alarms=[['main',!!state.periodAlarm||state.running,mainEnd,'main:'+Math.round(mainEnd)],['shot',!!state.shotAlarm||state.shot.running,shotEnd,'shot:'+Math.round(shotEnd)]];
     for(const [kind,running,end,id] of alarms){if(inAlertWindow(running,end,now)&&!sounded.has(id)){sounded.add(id);playHorn(kind);}}
     if(sounded.size>100){const last=[...sounded].slice(-50);sounded.clear();last.forEach(id=>sounded.add(id));}
   }
