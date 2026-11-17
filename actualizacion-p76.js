@@ -41,8 +41,12 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
 @media(max-width:650px){.p76-stat-controls{grid-template-columns:1fr}}
 `;
   style.textContent+='\n/* Control de teléfono: estructura de dos columnas para puntos y tarjetas completas. */\n@media(max-width:650px){\n body:not(.display) main{padding:12px;max-width:100%;overflow-x:hidden}\n body:not(.display) header{padding:12px;gap:8px}\n body:not(.display) .brand{font-size:14px}\n body:not(.display) h1{font-size:26px;margin:12px 0}\n body:not(.display) #intro .muted{font-size:14px;margin:8px 0}\n body:not(.display) #links{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);overflow:visible;gap:8px;align-items:stretch}\n body:not(.display) #links button,body:not(.display) #links .button{width:100%;min-width:0;min-height:48px;padding:10px 7px;font-size:13px;text-align:center;display:flex;align-items:center;justify-content:center;white-space:normal}\n body:not(.display) #links .small{grid-column:1/-1;font-size:12px}\n body:not(.display) #controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:14px}\n body:not(.display) #controls>.wide{grid-column:1/-1}\n body:not(.display) #controls .panel{padding:14px;border-radius:12px}\n body:not(.display) #controls h3{font-size:18px;line-height:1.25;margin:0 0 12px}\n body:not(.display) #controls button{touch-action:manipulation}\n body:not(.display) .p76-shot-buttons{gap:10px}\n body:not(.display) .p76-shot-buttons button,body:not(.display) #p76-global-pause{font-size:20px;min-height:60px;padding:12px}\n body:not(.display) #p76-possession{width:100%;min-height:54px;font-size:18px}\n body:not(.display) #p76-global-note{font-size:12px;line-height:1.5;margin-top:10px}\n body:not(.display) .p76-stat-controls{grid-template-columns:minmax(0,1fr);gap:12px}\n body:not(.display) .p76-stat-controls>div{padding:12px;min-width:0}\n body:not(.display) .p76-stat-controls h4{margin:0 0 8px;font-size:15px;overflow-wrap:anywhere}\n body:not(.display) .p76-stat-controls .line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;margin:0;padding:10px 0;border-top:1px solid #282828;align-items:center}\n body:not(.display) .p76-stat-controls .line>span:first-child{display:flex;flex-direction:column;align-items:flex-start;gap:4px;font-size:14px;line-height:1.3}\n body:not(.display) .p76-stat-value{font-size:24px;margin:0;white-space:nowrap;line-height:1.2}\n body:not(.display) .p76-stat-controls .line>span:last-child{display:flex;flex-direction:row;gap:8px;align-items:center}\n body:not(.display) .p76-stat-controls [data-field]{min-width:52px;width:52px;min-height:54px;height:54px;padding:0;font-size:34px;line-height:1;display:flex;align-items:center;justify-content:center}\n body:not(.display) #team-control0,body:not(.display) #team-control1{grid-column:auto;padding:12px}\n body:not(.display) #team-control0 h3,body:not(.display) #team-control1 h3{font-size:16px;text-align:center}\n body:not(.display) .points{margin:10px 0 0;gap:9px!important}\n body:not(.display) .points button{min-height:56px;padding:10px 4px;font-size:26px}\n body:not(.display) #p76-timing .bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}\n body:not(.display) #p76-timing .bar button{min-width:0;padding:12px 6px;min-height:52px;font-size:14px}\n body:not(.display) #p76-timing .bar:has(#reset){grid-template-columns:1fr}\n body:not(.display) #p76-timing .time-inputs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px}\n body:not(.display) #p76-timing .time-inputs input{width:100%;min-width:0;font-size:20px;text-align:center}\n body:not(.display) #settime{grid-column:1/-1;min-height:48px}\n body:not(.display) #p76-timing select{min-height:48px}\n body:not(.display) #p76-team-config{grid-template-columns:minmax(0,1fr);gap:12px}\n body:not(.display) .p76-team-card{padding:12px;min-width:0}\n body:not(.display) .p76-team-card h4{font-size:14px;margin:0 0 12px}\n body:not(.display) .p76-team-row input,body:not(.display) .p76-team-card select{font-size:16px;min-height:46px}\n body:not(.display) #controls details summary{font-size:14px;line-height:1.4;padding:8px 0}\n body:not(.display) #controls .muted.small{font-size:12px;line-height:1.5}\n}\n';
+  style.textContent+='\n.p76-match-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}\n.p76-match-actions button{min-height:70px;font-size:22px;font-weight:900;width:100%}\n#p76-finish{width:100%;margin-top:12px;min-height:54px;background:#721b24;border-color:#da4252;font-weight:800;font-size:18px}\n.p76-points-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}\n#p76-final{position:absolute;inset:0;background:#000;z-index:10;display:flex;flex-direction:column;align-items:center;padding:25px 70px;color:white}\n.p76-final-brand{width:120px;height:120px;object-fit:contain}\n.p76-final-title{font-size:60px;font-weight:900;font-style:italic;margin:15px 0 20px;letter-spacing:2px}\n.p76-final-frame{width:100%;min-height:430px;border:5px solid #ff6500;border-radius:30px;display:grid;grid-template-columns:1fr 1.2fr 1fr;align-items:center;padding:20px;gap:20px}\n.p76-final-team{text-align:center;min-width:0}.p76-final-team img{width:250px;height:250px;object-fit:contain}\n.p76-final-name{font-size:34px;font-weight:900;overflow-wrap:anywhere;border:2px solid #ff6500;padding:14px 10px;margin-top:15px;min-height:78px}\n.p76-final-scores{display:flex;align-items:center;justify-content:center;gap:20px;font-size:150px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-5px}\n.p76-final-scores span{min-width:0}.p76-final-dash{font-size:85px;color:#ff6500}\n.p76-final-footer{font-size:26px;letter-spacing:3px;margin-top:20px}.p76-final-footer b{color:#ff6500}\n@media(max-width:650px){body:not(.display) .p76-match-actions{gap:10px}body:not(.display) .p76-match-actions button,body:not(.display) .p76-match-actions #p76-global-pause{font-size:17px;min-height:60px}body:not(.display) #p76-points .panel{padding:10px}body:not(.display) #p76-timing .bar:has(#next){grid-template-columns:1fr}}\n';
   document.head.append(style);
   const divider=document.createElement('div');divider.className='p76-score-divider';divider.setAttribute('aria-hidden','true');$('stage').append(divider);
+  const final=document.createElement('div');final.id='p76-final';final.hidden=true;
+  final.innerHTML='<img class="p76-final-brand" alt="Punto Deportivo 76"><div class="p76-final-title">FINAL DEL PARTIDO</div><div class="p76-final-frame"><div class="p76-final-team"><img id="p76-final-logo0" alt="Escudo local"><div class="p76-final-name" id="p76-final-name0"></div></div><div class="p76-final-scores"><span id="p76-final-score0"></span><span class="p76-final-dash">–</span><span id="p76-final-score1"></span></div><div class="p76-final-team"><img id="p76-final-logo1" alt="Escudo visitante"><div class="p76-final-name" id="p76-final-name1"></div></div></div><div class="p76-final-footer">PUNTO DEPORTIVO 76 · <b>STREAMING</b></div>';
+  final.querySelector('.p76-final-brand').src=document.querySelector('.emblem img').getAttribute('src');$('stage').append(final);
   const alarm=document.createElement('div');alarm.id='p76-period-alarm';alarm.setAttribute('aria-hidden','true');document.body.append(alarm);
   const baseChange=change;
   change=function(mutator){
@@ -51,29 +55,30 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       const beforeRunning=state.running,beforeSeconds=state.seconds,beforeDeadline=state.mainAlarmAt||observed;
       const oldPeriod=state.period;
       mutator();
+      if(!state.running&&!state.finished&&!state.globalPause?.active&&state.seconds!==beforeSeconds)state.periodStarted=false;
       if(state.period!==oldPeriod){
-        state.fouls=[0,0];state.timeouts=[0,0];state.statLocks=null;state.globalPause=null;
-        state.running=false;state.shot={...state.shot,seconds:24,running:false,stamp:Date.now()};
+        state.fouls=[0,0];state.timeouts=[0,0];state.statLocks=null;state.globalPause=null;state.periodStarted=false;
+        state.running=false;state.shot={...state.shot,seconds:24,running:false,stamp:clockNow()};
       }
       for(const [field,max] of [['fouls',5],['timeouts',2]]){
         state[field]=state[field].map(v=>Math.max(0,Math.min(max,v)));
       }
-      state.mainAlarmAt=state.running?(!beforeRunning||state.seconds!==beforeSeconds?Date.now()+state.seconds*1000:beforeDeadline||Date.now()+state.seconds*1000):null;
+      state.mainAlarmAt=state.running?(!beforeRunning||state.seconds!==beforeSeconds?clockNow()+state.seconds*1000:beforeDeadline||clockNow()+state.seconds*1000):null;
     });
   };
   const previousRemaining=remaining;
   remaining=function(){
-    if(state&&state.running&&Number.isFinite(state.mainAlarmAt))return Math.max(0,Math.ceil((state.mainAlarmAt-Date.now())/1000));
+    if(state&&state.running&&Number.isFinite(state.mainAlarmAt))return Math.max(0,Math.ceil((state.mainAlarmAt-clockNow())/1000));
     return Math.ceil(previousRemaining());
   };
   function shotSet(seconds,alternate){
-    if(state.globalPause?.active)return;
+    if(state.globalPause?.active||state.finished||!startedPeriod()||remaining()<=0)return;
     const current=state.shot.team;
-    state.shot={team:alternate?(current===0?1:0):(current===null?0:current),seconds,running:true,stamp:Date.now()};
+    state.shot={team:alternate?(current===0?1:0):(current===null?0:current),seconds,running:true,stamp:clockNow()};
   }
 
   function toggleGlobalPause(){
-    const now=Date.now();
+    const now=clockNow();
     if(state.globalPause?.active){
       const pause=state.globalPause;
       state.running=!!pause.mainWasRunning&&state.seconds>0;
@@ -94,28 +99,62 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     }
   }
   function adjustStat(i,field,delta,max){
-    if(state.statLocks?.[field]?.[i]||state[field][i]>=max||(delta<0&&state[field][i]<=0))return;
+    if(state.finished||state.statLocks?.[field]?.[i]||state[field][i]>=max||(delta<0&&state[field][i]<=0))return;
     if(!state.globalPause?.active)toggleGlobalPause();
     state[field][i]=Math.max(0,Math.min(max,state[field][i]+delta));
     state.statLocks=state.statLocks||{fouls:[false,false],timeouts:[false,false]};
     if(state[field][i]>=max)state.statLocks[field][i]=true;
   }
+  function startedPeriod(){return !!(state.periodStarted??(state.running||state.globalPause?.mainWasRunning));}
+  function startPeriod(){
+    if(state.finished||(startedPeriod()&&remaining()>0))return;
+    if(state.seconds<=0)state.seconds=state.period>4?300:600;
+    state.periodStarted=true;state.globalPause=null;state.running=true;state.stamp=clockNow();state.mainAlarmAt=clockNow()+state.seconds*1000;
+  }
+  function finishMatch(){
+    if(state.finished)return;
+    if(!state.globalPause?.active)toggleGlobalPause();
+    state.running=false;state.shot.running=false;state.finished=true;
+    state.finalResult={names:[...state.names],logos:[...state.logos],scores:[...state.scores]};
+  }
+  function renderFinal(){
+    const layer=$('p76-final');if(!layer||!state)return;
+    const finished=!!state.finished;layer.hidden=!finished;
+    if(!finished)return;
+    const result=state.finalResult||state;
+    const digits=Math.max(...result.scores.map(n=>String(n).length));layer.querySelector('.p76-final-scores').style.fontSize=digits>=4?'80px':digits===3?'110px':'150px';
+    for(let i=0;i<2;i++){
+      $('p76-final-name'+i).textContent=result.names[i];
+      $('p76-final-score'+i).textContent=result.scores[i];
+      const img=$('p76-final-logo'+i),src=safeLogo(result.logos?.[i]);img.hidden=!src;if(src&&img.getAttribute('src')!==src)img.src=src;
+    }
+  }
   function syncGlobalUI(){
     if(!state)return;
     const paused=!!state.globalPause?.active;
-    for(const id of ['p76-shot24','p76-shot14','toggle'])if($(id))$(id).disabled=paused;
+    const started=startedPeriod(),ended=!!state.finished,atZero=remaining()<=0;
+    for(const id of ['p76-shot24','p76-shot14'])if($(id))$(id).disabled=paused||ended||!started||atZero;
+    if($('p76-start'))$('p76-start').disabled=ended||(started&&!atZero);
+    if($('p76-finish'))$('p76-finish').disabled=ended;
+    if($('p76-possession'))$('p76-possession').disabled=ended;
+    if($('next'))$('next').disabled=ended;
+    if($('setperiod'))$('setperiod').disabled=ended;
+    if($('settime'))$('settime').disabled=ended||started&&!atZero;
+    for(const team of ['team-control0','team-control1'])$(team)?.querySelectorAll('button').forEach(b=>b.disabled=ended);
+    if($('p76-global-pause'))$('p76-global-pause').disabled=ended||!started||atZero;
     const button=$('p76-global-pause');
     if(button){
       button.textContent=paused?'Continuar':'Detener';
       button.classList.toggle('paused',paused);
       button.setAttribute('aria-pressed',String(paused));
-      $('p76-global-note').textContent=paused?'Pausa activa. Se conservan los tiempos y se bloquean Cambiar a 24 y Cambiar a 14.':'Detiene ambos relojes. Al continuar se reanudan los que estaban contando.';
+      $('p76-global-note').textContent=ended?'Partido terminado. Reinicia el partido para comenzar otro.':!started?'Pulsa Iniciar reloj para habilitar Detener / Continuar.':paused?'Pausa activa. Se conservan los tiempos y se bloquean Cambiar a 24 y Cambiar a 14.':'Detiene ambos relojes. Al continuar se reanudan los que estaban contando.';
     }
+    renderFinal();
     for(let i=0;i<2;i++){
       const score=$('s'+i);if(score){const digits=String(state.scores[i]).length;score.style.fontSize=digits>=4?'105px':digits===3?'145px':'180px';}
       const label=$('p76-stat-team'+i);if(label)label.textContent=state.names[i];
       for(const [field,max] of [['fouls',5],['timeouts',2]]){
-        const locked=!!state.statLocks?.[field]?.[i]||state[field][i]>=max;
+        const locked=ended||!!state.statLocks?.[field]?.[i]||state[field][i]>=max;
         const area=$('p76-stat-control'+i);
         if(area)area.querySelectorAll('[data-field="'+field+'"]').forEach(b=>b.disabled=locked||(Number(b.dataset.value)<0&&state[field][i]<=0));
         const count=$('p76-count-'+field+i);if(count)count.textContent=Math.min(max,state[field][i])+' / '+max;
@@ -127,13 +166,13 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   function updateMainAlarm(){
     if(!state)return;
     const end=state.mainAlarmAt||state.stamp+state.seconds*1000;
-    const expired=inAlertWindow(state.running,end,Date.now());
+    const expired=inAlertWindow(state.running,end,clockNow());
     alarm.classList.toggle('active',expired);
     $('board').classList.toggle('p76-period-warning',expired&&!view);
   }
   renderShot=function(){
     if(!state)return;
-    const shot=state.shot,now=Date.now(),value=Math.ceil(shotRemaining());
+    const shot=state.shot,now=clockNow(),value=Math.ceil(shotRemaining());
     const expired=inAlertWindow(shot.running,shot.stamp+shot.seconds*1000,now);
     for(let i=0;i<2;i++){
       const selected=shot.team===i,box=$('shot'+i);
@@ -198,7 +237,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
         if(!item.name.trim()||!item.logo)continue;
         const existing=Object.entries(catalog).find(([,entry])=>entry.name?.trim().toLocaleLowerCase('es')===item.name.trim().toLocaleLowerCase('es'));
         const itemId=existing?existing[0]:crypto.randomUUID();
-        await firebase.set(firebase.ref(firebase.db,libraryPath+'/'+itemId),{name:item.name.trim(),logo:item.logo,updatedAt:Date.now()});saved++;
+        await firebase.set(firebase.ref(firebase.db,libraryPath+'/'+itemId),{name:item.name.trim(),logo:item.logo,updatedAt:clockNow()});saved++;
       }
       libraryMessage(saved?'Equipos guardados en la base. Ya puedes seleccionarlos sin volver a cargar las imágenes.':'Ingresa el nombre y el escudo de al menos un equipo antes de guardar.');
     }catch{libraryMessage('No se pudo guardar el catálogo. Revisa conexión y permisos de Firebase; el marcador conserva sus equipos.');}
@@ -267,7 +306,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     };
 
     const pauseSection=document.createElement('section');pauseSection.className='panel wide';
-    pauseSection.innerHTML='<h3>Pausa del partido</h3><button id="p76-global-pause" aria-pressed="false">Detener</button><p id="p76-global-note"></p>';
+    pauseSection.innerHTML='<h3>Iniciar reloj</h3><div class="p76-match-actions"><button id="p76-start" class="orange">Iniciar reloj</button><button id="p76-global-pause" aria-pressed="false">Detener</button></div><button id="p76-finish">Terminar partido</button><p id="p76-global-note"></p>';
     const statsSection=document.createElement('section');statsSection.className='panel wide';
     statsSection.innerHTML='<h3>Faltas y tiempos</h3><div class="p76-stat-controls"><div id="p76-stat-control0"><h4 id="p76-stat-team0">LOCAL</h4></div><div id="p76-stat-control1"><h4 id="p76-stat-team1">VISITA</h4></div></div>';
     /* Mover los controles conservando todos sus eventos. */
@@ -286,9 +325,13 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       }
     }
     $('resetfouls').remove();
-    $('p76-global-pause').onclick=()=>change(toggleGlobalPause);
-    const timing=sectionWith('Reloj y período');timing.id='p76-timing';
-    const ordered=[shots,possession,pauseSection,statsSection,$('team-control0'),$('team-control1'),timing,teams];
+    $('p76-start').onclick=()=>change(startPeriod);
+    $('p76-global-pause').onclick=()=>{if(startedPeriod()&&!state.finished&&remaining()>0)change(toggleGlobalPause);};
+    $('p76-finish').onclick=()=>{if(confirm('¿Terminar el partido y mostrar el marcador final?'))change(finishMatch);};
+    const timing=sectionWith('Reloj y período');timing.id='p76-timing';$('toggle').remove();
+    const points=document.createElement('section');points.className='panel wide';points.id='p76-points';points.innerHTML='<h3>Puntaje</h3><div class="p76-points-grid" id="p76-points-grid"></div>';
+    $('controls').append(points);$('p76-points-grid').append($('team-control0'),$('team-control1'));
+    const ordered=[shots,possession,pauseSection,statsSection,points,timing,teams];
     ordered.filter(Boolean).forEach(section=>$('controls').append(section));
     syncGlobalUI();
 

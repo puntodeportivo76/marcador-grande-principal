@@ -638,7 +638,13 @@ let connected=false;
 let controlsReady=false;
 let revision=0;
 let queue=Promise.resolve();
+let clockOffset=0,bestClockRTT=Infinity;
+function clockNow(){return Date.now()+clockOffset;}
 let loading=false;
+let liveStream=null,streamHealthy=false,lastStreamEvent=0;
+let needFull=false,clockProbed=false;
+let lastAssets=null,ackLogos=null,latestVersion=-1;
+
 let pendingSave=null;
 let saveRetry=null;
 
@@ -653,7 +659,7 @@ function freshShot(){
     team:null,
     seconds:24,
     running:false,
-    stamp:Date.now()
+    stamp:clockNow()
   };
 }
 
@@ -691,7 +697,7 @@ function remaining(){
   if(!state)return 0;
 
   const elapsed=state.running
-    ?Math.max(0,Math.floor((Date.now()-state.stamp)/1000))
+    ?Math.max(0,Math.floor((clockNow()-state.stamp)/1000))
     :0;
 
   return Math.max(0,state.seconds-elapsed);
@@ -699,7 +705,7 @@ function remaining(){
 
 /* Cuenta de 24 segundos: una sola cuenta activa. */
 
-function shotRemaining(shot=state?.shot,now=Date.now()){
+function shotRemaining(shot=state?.shot,now=clockNow()){
   if(!shot)return 24;
 
   const elapsed=shot.running
@@ -716,7 +722,7 @@ function switchShot(){
     team:previous===0?1:0,
     seconds:24,
     running:true,
-    stamp:Date.now()
+    stamp:clockNow()
   };
 }
 
@@ -729,7 +735,7 @@ function pauseShot(){
     ...state.shot,
     seconds,
     running:seconds>0&&!state.shot.running,
-    stamp:Date.now()
+    stamp:clockNow()
   };
 }
 
@@ -738,7 +744,7 @@ function resetShot(){
     ...state.shot,
     seconds:24,
     running:false,
-    stamp:Date.now()
+    stamp:clockNow()
   };
 }
 
@@ -998,7 +1004,7 @@ function saveControl(gameId,controlKey,data){
       id:gameId,
       key:controlKey,
       names:data?.names||old?.names||['LOCAL','VISITA'],
-      updated:Date.now()
+      updated:clockNow()
     };
 
     localStorage.setItem(
@@ -1083,6 +1089,7 @@ function renderSaved(){
 /* Comunicación con el servicio online. */
 
 async function request(path,options={}){
+  const clockProbeStarted=Date.now();
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),15000);
 
@@ -1103,23 +1110,53 @@ async function request(path,options={}){
       );
     }
 
-    return await response.json();
+    const data=await response.json();
+    const rtt=Date.now()-clockProbeStarted;
+    if(Number.isFinite(data._p76ServerNow)&&rtt<bestClockRTT){bestClockRTT=rtt;clockOffset=data._p76ServerNow-(clockProbeStarted+rtt/2);}
+    return data;
   }finally{
     clearTimeout(timer);
   }
 }
 
-async function load(){
+function acceptState(data,full=false){
+  const version=data._p76Version??0;
+  if(version<latestVersion)return;
+  const logos=full?data.logos:state?.logos;
+  const incomingAssets=data._p76Assets??0;
+  if(!full&&lastAssets!==null&&incomingAssets!==lastAssets){needFull=true;if(!loading){needFull=false;load(true);}return;}
+  latestVersion=version;
+  state=normalize({...data,logos:logos||['','']});
+  if(full){lastAssets=incomingAssets;ackLogos=JSON.stringify(state.logos);}
+  connected=true;
+}
+function connectLive(){
+  if(!view||liveStream||!window.EventSource)return;
+  liveStream=new EventSource(API+'/api/stream/'+id);
+  liveStream.addEventListener('state',event=>{
+    try{
+      const data=JSON.parse(event.data);streamHealthy=true;lastStreamEvent=Date.now();
+      acceptState(data);$('status').textContent='● EN DIRECTO';render();
+    }catch{streamHealthy=false;}
+  });
+  liveStream.addEventListener('pulse',()=>{streamHealthy=true;lastStreamEvent=Date.now();});
+  liveStream.onerror=()=>{streamHealthy=false;};
+}
+async function load(forceFull=false){
   if(saving||pendingSave||loading)return;
+  if(!forceFull&&streamHealthy&&Date.now()-lastStreamEvent<12000)return;
   loading=true;
   const started=revision;
 
   try{
-    const data=await request('/api/game/'+id);
+    const full=forceFull||!state;
+    const data=await request('/api/game/'+id+(full?'':'?compact=1'));
 
     if(saving||started!==revision)return;
 
-    state=normalize(data);
+    acceptState(data,full);
+    connectLive();
+    if(!clockProbed){clockProbed=true;(async()=>{for(let i=0;i<3;i++){try{await request('/api/time');}catch{break;}}})();}
     connected=true;
 
     $('status').textContent='● CONECTADO';
@@ -1139,15 +1176,15 @@ async function load(){
     $('status').textContent='SIN CONEXIÓN';
     message(error.message+'. Reintentando…');
     render();
-  }finally{loading=false;}
+  }finally{loading=false;if(needFull){needFull=false;load(true);}}
 }
 
 /* Aplicar el gesto ahora. La red guarda instantáneas en orden sin retrasar botones. */
 function change(mutator){
   if(!state)return Promise.resolve();
   revision++;
-  state.seconds=state.running?(Number.isFinite(state.mainAlarmAt)?Math.max(0,(state.mainAlarmAt-Date.now())/1000):remaining()):state.seconds;
-  state.stamp=Date.now();
+  state.seconds=state.running?(Number.isFinite(state.mainAlarmAt)?Math.max(0,(state.mainAlarmAt-clockNow())/1000):remaining()):state.seconds;
+  state.stamp=clockNow();
   mutator();
   render();
   pendingSave=JSON.parse(JSON.stringify(state));
@@ -1167,11 +1204,17 @@ function flushChanges(){
         const snapshot=pendingSave;
         pendingSave=null;
         try{
-          await request('/api/game/'+id,{
-            method:'PUT',
-            headers:{'Content-Type':'application/json','X-Control-Key':key},
-            body:JSON.stringify(snapshot)
+          const sending={...snapshot};
+          // Los escudos solo viajan cuando cambian, no al iniciar o detener relojes.
+          if(JSON.stringify(sending.logos)===ackLogos)delete sending.logos;
+          const ack=await request('/api/game/'+id,{
+            method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},
+            body:JSON.stringify({key,state:sending})
           });
+          if(ack.ok!==true)throw new Error('El servicio necesita la actualización de sincronización');
+          ackLogos=JSON.stringify(snapshot.logos);
+          latestVersion=Math.max(latestVersion,ack.version??0);
+          lastAssets=ack.assets??lastAssets;
           // La respuesta nunca sustituye un gesto más reciente ni reinicia el reloj.
           connected=true;
           $('status').textContent='● CONECTADO';
@@ -1579,7 +1622,7 @@ function buildControls(){
         period:1,
         seconds:600,
         running:false,
-        stamp:Date.now(),
+        stamp:clockNow(),
         possession:null,
         shot:freshShot()
       };
@@ -1662,11 +1705,11 @@ if(id){
   fitBoard();
   load();
 
-  setInterval(load,300);
+  setInterval(()=>load(),500);
   setInterval(()=>render(),100);
 }
 </script>
-<script src="actualizacion-p76.js?v=6"></script>
+<script src="actualizacion-p76.js?v=7"></script>
 </body>
 </html>
 
