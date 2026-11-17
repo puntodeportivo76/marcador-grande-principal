@@ -65,7 +65,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       if(!state.running&&!state.finished&&!state.globalPause?.active&&state.seconds!==beforeSeconds)state.periodStarted=false;
       if(state.period!==oldPeriod){
         state.fouls=[0,0];state.timeouts=[0,0];state.statLocks=null;state.globalPause=null;state.periodStarted=false;state.shotAlarm=null;state.periodAlarm=null;
-        state.running=false;state.shot={team:oldShotTeam??oldPossession??0,seconds:24,running:false,stamp:clockNow()};state.possession=oldPossession;
+        state.running=false;state.shot={team:oldShotTeam??null,seconds:24,running:false,stamp:clockNow()};state.possession=oldPossession;
       }
       for(const [field,max] of [['fouls',5],['timeouts',2]]){
         state[field]=state[field].map(v=>Math.max(0,Math.min(max,v)));
@@ -79,10 +79,10 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     return Math.ceil(previousRemaining());
   };
   function shotSet(seconds,alternate){
-    if(state.globalPause?.active||state.finished||!startedPeriod()||remaining()<=0)return;
+    if(state.globalPause?.active||state.finished||remaining()<=0)return;
     state.shotAlarm=null;
     const current=state.shot.team;
-    state.shot={team:alternate?(current===0?1:0):(current===null?0:current),seconds,running:true,stamp:clockNow()};
+    state.shot={team:alternate?(current===0?1:0):(current===null?0:current),seconds,running:state.running,stamp:clockNow()};
   }
 
   function toggleGlobalPause(){
@@ -137,7 +137,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   function startPeriod(){
     if(state.finished||(startedPeriod()&&remaining()>0))return;
     if(state.seconds<=0)state.seconds=state.period>4?300:600;
-    state.periodStarted=true;state.globalPause=null;state.periodAlarm=null;state.shotAlarm=null;state.running=true;state.stamp=clockNow();state.mainAlarmAt=state.stamp+state.seconds*1000;state.shot={team:state.shot.team??state.possession??0,seconds:24,running:true,stamp:state.stamp};state.possession=state.shot.team;
+    state.periodStarted=true;state.globalPause=null;state.periodAlarm=null;state.shotAlarm=null;state.running=true;state.stamp=clockNow();state.mainAlarmAt=state.stamp+state.seconds*1000;const team=state.shot.team;state.shot={team,seconds:24,running:team!==null,stamp:state.stamp};
   }
   function finishMatch(){
     if(state.finished)return;
@@ -161,7 +161,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     if(!state)return;
     const paused=!!state.globalPause?.active;
     const started=startedPeriod(),ended=!!state.finished,atZero=remaining()<=0;
-    for(const id of ['p76-shot24','p76-shot14'])if($(id))$(id).disabled=paused||ended||!started||atZero;
+    for(const id of ['p76-shot24','p76-shot14'])if($(id))$(id).disabled=paused||ended||atZero;
     if($('p76-start'))$('p76-start').disabled=ended||(started&&!atZero);
     if($('p76-finish'))$('p76-finish').disabled=ended;
     if($('p76-possession'))$('p76-possession').disabled=ended;
@@ -218,7 +218,25 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
 
   let audioContext=null,audioUnlocked=false,customAudio=null;
   const sounded=new Set();
-  function safeSound(src){return typeof src==='string'&&src.length<450000&&/^data:audio\/[a-z0-9.+-]+;base64,[a-z0-9+/=]+$/i.test(src)?src:'';}
+  const decodedSounds=new Map();
+  function safeSound(src){return typeof src==='string'&&src.length<450000&&/^data:audio\/[a-z0-9.+-]+(?:;[^,]*)?;base64,[a-z0-9+/=]+$/i.test(src)?src:'';}
+  async function decodeSound(src){
+    if(decodedSounds.has(src))return decodedSounds.get(src);
+    const bytes=Uint8Array.from(atob(src.slice(src.indexOf(',')+1)),c=>c.charCodeAt(0));
+    const pending=audioContext.decodeAudioData(bytes.buffer);decodedSounds.set(src,pending);
+    try{const buffer=await pending;decodedSounds.set(src,buffer);if(decodedSounds.size>4)decodedSounds.delete(decodedSounds.keys().next().value);return buffer;}catch(error){decodedSounds.delete(src);throw error;}
+  }
+  function wavData(buffer){
+    // Normalize any supported source to a short, portable PCM WAV.
+    const rate=22050,length=Math.min(Math.ceil(buffer.duration*rate),rate*5);
+    const bytes=new ArrayBuffer(44+length*2),v=new DataView(bytes);
+    const word=(at,value)=>{for(let i=0;i<value.length;i++)v.setUint8(at+i,value.charCodeAt(i));};
+    word(0,'RIFF');v.setUint32(4,36+length*2,true);word(8,'WAVE');word(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,rate,true);v.setUint32(28,rate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);word(36,'data');v.setUint32(40,length*2,true);
+    const channels=Array.from({length:buffer.numberOfChannels},(_,i)=>buffer.getChannelData(i));
+    for(let i=0;i<length;i++){const at=i*buffer.sampleRate/rate,lo=Math.floor(at),hi=Math.min(lo+1,buffer.length-1),f=at-lo;let sample=0;for(const c of channels)sample+=(c[lo]||0)*(1-f)+(c[hi]||0)*f;sample=Math.max(-1,Math.min(1,sample/channels.length));v.setInt16(44+i*2,sample*(sample<0?32768:32767),true);}
+    let binary='';for(const n of new Uint8Array(bytes))binary+=String.fromCharCode(n);
+    return 'data:audio/wav;base64,'+btoa(binary);
+  }
   async function unlockAudio(){
     const AudioContext=window.AudioContext||window.webkitAudioContext;
     if(!AudioContext){message('Este navegador no permite activar la bocina. Prueba con Chrome.');return false;}
@@ -236,9 +254,11 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
     if(!audioUnlocked||!audioContext)return;
     const src=safeSound(state?.sounds?.[kind]);
     if(src){
-      if(customAudio){customAudio.pause();customAudio=null;}
-      customAudio=new Audio(src);customAudio.volume=1;customAudio.play().catch(()=>message('Pulsa Activar sonido en esta pantalla.'));
-      const playing=customAudio;setTimeout(()=>{playing.pause();},5000);return;
+      decodeSound(src).then(buffer=>{
+        if(customAudio){try{customAudio.stop();}catch{}}
+        const source=audioContext.createBufferSource();source.buffer=buffer;source.connect(audioContext.destination);source.start();source.stop(audioContext.currentTime+Math.min(5,buffer.duration));customAudio=source;
+      }).catch(()=>message('No se puede reproducir el audio guardado. Vuelve a cargarlo en Sonidos.'));
+      return;
     }
     const now=audioContext.currentTime,duration=kind==='main'?1.8:.8;
     const gain=audioContext.createGain(),filter=audioContext.createBiquadFilter();
@@ -250,6 +270,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
 
   function updateSoundAlarms(){
     if(!state||state.finished||!audioUnlocked||!view)return;
+    for(const kind of ['main','shot']){const src=safeSound(state.sounds?.[kind]);if(src&&!decodedSounds.has(src))decodeSound(src).catch(()=>{});}
     const now=clockNow(),mainEnd=state.periodAlarm?.at||state.mainAlarmAt||state.stamp+state.seconds*1000,shotEnd=state.shotAlarm?.at||state.shot.stamp+state.shot.seconds*1000;
     const alarms=[['main',!!state.periodAlarm||state.running,mainEnd,'main:'+Math.round(mainEnd)],['shot',!!state.shotAlarm||state.shot.running,shotEnd,'shot:'+Math.round(shotEnd)]];
     for(const [kind,running,end,id] of alarms){if(inAlertWindow(running,end,now)&&!sounded.has(id)){sounded.add(id);playHorn(kind);}}
@@ -257,7 +278,7 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
   }
   function installSounds(){
     const section=document.createElement('section');section.className='panel wide';section.id='p76-sounds-panel';
-    section.innerHTML='<h3>Sonidos</h3><p class="muted small">Bocinas estilo NBA, sintetizadas. Puedes cargar otro audio (máx. 300 KB).</p><div class="p76-audio-grid" id="p76-audio-grid"></div>';
+    section.innerHTML='<h3>Sonidos</h3><p class="muted small">Carga tu bocina (máx. 10 MB). Se guardan hasta 5 segundos de audio en la base del partido.</p><div class="p76-audio-grid" id="p76-audio-grid"></div>';
     for(const [kind,label] of [['main','Fin de período'],['shot','Fin de 24 / 14 segundos']]){
       const box=document.createElement('div');box.className='p76-audio-card';
       box.innerHTML='<h4>'+label+'</h4><input type="file" accept="audio/*" id="p76-audio-'+kind+'" hidden><div class="p76-audio-actions"><button id="p76-upload-audio-'+kind+'">Cargar audio</button><button id="p76-test-'+kind+'">Probar</button><button id="p76-default-'+kind+'">Restablecer</button></div><p class="muted small" id="p76-audio-label-'+kind+'"></p>';
@@ -267,12 +288,21 @@ body:not(.display) #links{display:flex!important;flex-direction:row!important;fl
       box.querySelector('#p76-default-'+kind).onclick=()=>change(()=>{state.sounds={...state.sounds,[kind]:null,[kind+'Name']:null};});
       box.querySelector('#p76-audio-'+kind).onchange=async event=>{
         const file=event.target.files[0];if(!file)return;
-        if(file.size>300000||(!file.type.startsWith('audio/')&&!/\.(mp3|wav|ogg|m4a|aac)$/i.test(file.name))){message('Elige un audio MP3, WAV u OGG de hasta 300 KB.');event.target.value='';return;}
+        if(file.size>10000000){message('Elige un audio de hasta 10 MB.');event.target.value='';return;}
+        const upload=box.querySelector('#p76-upload-audio-'+kind);upload.disabled=true;
         try{
-          const src=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});
-          if(!safeSound(src)){message('No se reconoce este formato de audio. Prueba un MP3 o WAV.');return;}
-          change(()=>{state.sounds={...state.sounds,[kind]:src,[kind+'Name']:file.name.slice(0,100)};});
-        }catch{message('No se pudo leer el sonido. Intenta con otro archivo.');}finally{event.target.value='';}
+          if(!await unlockAudio())throw new Error('Activa el sonido antes de cargar el archivo.');
+          message('Preparando audio…');
+          let buffer;try{buffer=await audioContext.decodeAudioData(await file.arrayBuffer());}catch{throw new Error('Este archivo no se puede reproducir. Prueba MP3 o WAV.');}
+          if(!buffer.length||buffer.duration<=0)throw new Error('El archivo de audio está vacío.');
+          const src=wavData(buffer);await decodeSound(src);
+          await change(()=>{state.sounds={...state.sounds,[kind]:src,[kind+'Name']:file.name.slice(0,100)};});
+          if(pendingSave||!connected)throw new Error('Audio pendiente de guardar: revisa la conexión y espera Cambios guardados.');
+          const saved=await request('/api/game/'+id);
+          if(saved.sounds?.[kind]!==src)throw new Error('No se confirmó el audio en la base. Vuelve a cargarlo.');
+          message('Audio guardado en la base del partido. Pulsa Probar para escucharlo.');
+        }catch(error){message(error.message||'No se pudo guardar el sonido.');}finally{upload.disabled=false;event.target.value='';}
+
       };
     }
     return section;
