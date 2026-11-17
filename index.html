@@ -638,6 +638,9 @@ let connected=false;
 let controlsReady=false;
 let revision=0;
 let queue=Promise.resolve();
+let loading=false;
+let pendingSave=null;
+let saveRetry=null;
 
 if(view)document.body.classList.add('display');
 
@@ -1107,8 +1110,8 @@ async function request(path,options={}){
 }
 
 async function load(){
-  if(saving)return;
-
+  if(saving||pendingSave||loading)return;
+  loading=true;
   const started=revision;
 
   try{
@@ -1136,48 +1139,57 @@ async function load(){
     $('status').textContent='SIN CONEXIÓN';
     message(error.message+'. Reintentando…');
     render();
-  }
+  }finally{loading=false;}
 }
 
+/* Aplicar el gesto ahora. La red guarda instantáneas en orden sin retrasar botones. */
 function change(mutator){
-  queue=queue.then(async()=>{
-    if(!state)return;
+  if(!state)return Promise.resolve();
+  revision++;
+  state.seconds=state.running?(Number.isFinite(state.mainAlarmAt)?Math.max(0,(state.mainAlarmAt-Date.now())/1000):remaining()):state.seconds;
+  state.stamp=Date.now();
+  mutator();
+  render();
+  pendingSave=JSON.parse(JSON.stringify(state));
+  saveControl(id,key,state);
+  message('Enviando cambio…');
+  return flushChanges();
+}
 
-    saving=true;
-    revision++;
-
-    const previous=JSON.parse(JSON.stringify(state));
-
+function flushChanges(){
+  if(saving)return queue;
+  if(!pendingSave)return Promise.resolve();
+  if(saveRetry){clearTimeout(saveRetry);saveRetry=null;}
+  saving=true;
+  queue=(async()=>{
     try{
-      state.seconds=state.running?(Number.isFinite(state.mainAlarmAt)?Math.max(0,(state.mainAlarmAt-Date.now())/1000):remaining()):state.seconds;
-      state.stamp=Date.now();
-
-      mutator();
-      render();
-
-      state=normalize(
-        await request('/api/game/'+id,{
-          method:'PUT',
-          headers:{
-            'Content-Type':'application/json',
-            'X-Control-Key':key
-          },
-          body:JSON.stringify(state)
-        })
-      );
-
-      connected=true;
-      saveControl(id,key,state);
+      while(pendingSave){
+        const snapshot=pendingSave;
+        pendingSave=null;
+        try{
+          await request('/api/game/'+id,{
+            method:'PUT',
+            headers:{'Content-Type':'application/json','X-Control-Key':key},
+            body:JSON.stringify(snapshot)
+          });
+          // La respuesta nunca sustituye un gesto más reciente ni reinicia el reloj.
+          connected=true;
+          $('status').textContent='● CONECTADO';
+        }catch(error){
+          if(!pendingSave)pendingSave=snapshot;
+          connected=false;
+          $('status').textContent='CAMBIO PENDIENTE';
+          message('Sin confirmar en pantalla. Se conserva el cambio y se reintentará.');
+          saveRetry=setTimeout(()=>{saveRetry=null;flushChanges();},2000);
+          return;
+        }
+      }
       message('Cambios guardados');
-    }catch(error){
-      state=previous;
-      message(error.message+'. No se guardó el cambio.');
     }finally{
       saving=false;
       render();
     }
-  });
-
+  })();
   return queue;
 }
 
@@ -1650,11 +1662,11 @@ if(id){
   fitBoard();
   load();
 
-  setInterval(load,1500);
+  setInterval(load,300);
   setInterval(()=>render(),100);
 }
 </script>
-<script src="actualizacion-p76.js?v=4"></script>
+<script src="actualizacion-p76.js?v=6"></script>
 </body>
 </html>
 
