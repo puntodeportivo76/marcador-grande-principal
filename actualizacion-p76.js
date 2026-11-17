@@ -26,13 +26,17 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
 #p76-library-status{color:#ffbb7c;font-size:13px;line-height:1.5}
 .p76-auth-fields{display:grid;gap:10px;margin-top:12px}
 
-.score{width:350px;max-width:100%;margin:0 auto;padding:0 12px;border:2px solid #393939;border-radius:16px;letter-spacing:-4px;line-height:1.12;background:#000}
+.score{box-sizing:border-box;overflow:hidden;display:flex;align-items:center;justify-content:center;height:205px;width:350px;max-width:100%;margin:0 auto;padding:0 12px;border:2px solid #393939;border-radius:16px;letter-spacing:-4px;line-height:1.12;background:#000}
 .p76-score-divider{position:absolute;left:796px;top:390px;width:8px;height:220px;background:#ff6500;border-radius:4px;z-index:3}
 #p76-global-pause{width:100%;min-height:78px;font-size:24px;font-weight:900;background:#d7152d;color:white;border:2px solid white}
 #p76-global-pause.paused{background:#3bdb39;color:#041904}
 #p76-global-note{font-size:13px;color:#b9c7d6;margin:12px 0 0}
 .p76-stat-controls{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .p76-stat-controls>div{border:1px solid #343a42;border-radius:10px;padding:12px}
+.points{display:flex!important;flex-direction:column!important;gap:12px!important}.points button{width:100%;min-height:64px;font-size:28px}
+body:not(.display) #links{display:flex!important;flex-direction:row!important;flex-wrap:nowrap;overflow-x:auto;gap:10px}#links>*{flex-shrink:0}
+.p76-stat-controls [data-field]{min-width:76px;min-height:70px;font-size:40px;font-weight:900;padding:6px 15px}
+.p76-stat-value{font-size:26px;font-weight:900;margin-left:10px}
 .p76-stat-controls h4{margin:0 0 14px;color:#ffb369}
 @media(max-width:650px){.p76-stat-controls{grid-template-columns:1fr}}
 `;
@@ -44,7 +48,15 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
     const observed=state&&state.running?(state.mainAlarmAt||state.stamp+state.seconds*1000):null;
     return baseChange(()=>{
       const beforeRunning=state.running,beforeSeconds=state.seconds,beforeDeadline=state.mainAlarmAt||observed;
+      const oldPeriod=state.period;
       mutator();
+      if(state.period!==oldPeriod){
+        state.fouls=[0,0];state.timeouts=[0,0];state.statLocks=null;state.globalPause=null;
+        state.running=false;state.shot={...state.shot,seconds:24,running:false,stamp:Date.now()};
+      }
+      for(const [field,max] of [['fouls',5],['timeouts',2]]){
+        state[field]=state[field].map(v=>Math.max(0,Math.min(max,v)));
+      }
       state.mainAlarmAt=state.running?(!beforeRunning||state.seconds!==beforeSeconds?Date.now()+state.seconds*1000:beforeDeadline||Date.now()+state.seconds*1000):null;
     });
   };
@@ -80,10 +92,17 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
       state.globalPause={active:true,mainWasRunning,shotWasRunning};
     }
   }
+  function adjustStat(i,field,delta,max){
+    if(state.statLocks?.[field]?.[i]||state[field][i]>=max||(delta<0&&state[field][i]<=0))return;
+    if(!state.globalPause?.active)toggleGlobalPause();
+    state[field][i]=Math.max(0,Math.min(max,state[field][i]+delta));
+    state.statLocks=state.statLocks||{fouls:[false,false],timeouts:[false,false]};
+    if(state[field][i]>=max)state.statLocks[field][i]=true;
+  }
   function syncGlobalUI(){
     if(!state)return;
     const paused=!!state.globalPause?.active;
-    for(const id of ['p76-shot24','p76-shot14','toggle','next'])if($(id))$(id).disabled=paused;
+    for(const id of ['p76-shot24','p76-shot14','toggle'])if($(id))$(id).disabled=paused;
     const button=$('p76-global-pause');
     if(button){
       button.textContent=paused?'Continuar':'Detener';
@@ -92,8 +111,14 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
       $('p76-global-note').textContent=paused?'Pausa activa. Se conservan los tiempos y se bloquean Cambiar a 24 y Cambiar a 14.':'Detiene ambos relojes. Al continuar se reanudan los que estaban contando.';
     }
     for(let i=0;i<2;i++){
-      const score=$('s'+i);if(score){const digits=String(state.scores[i]).length;score.style.fontSize=digits>=4?'130px':digits===3?'180px':'220px';}
+      const score=$('s'+i);if(score){const digits=String(state.scores[i]).length;score.style.fontSize=digits>=4?'105px':digits===3?'145px':'180px';}
       const label=$('p76-stat-team'+i);if(label)label.textContent=state.names[i];
+      for(const [field,max] of [['fouls',5],['timeouts',2]]){
+        const locked=!!state.statLocks?.[field]?.[i]||state[field][i]>=max;
+        const area=$('p76-stat-control'+i);
+        if(area)area.querySelectorAll('[data-field="'+field+'"]').forEach(b=>b.disabled=locked||(Number(b.dataset.value)<0&&state[field][i]<=0));
+        const count=$('p76-count-'+field+i);if(count)count.textContent=Math.min(max,state[field][i])+' / '+max;
+      }
     }
   }
 
@@ -247,6 +272,19 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
     /* Mover los controles conservando todos sus eventos. */
     $('controls').append(pauseSection,statsSection);
     for(let i=0;i<2;i++)$('team-control'+i).querySelectorAll('.line').forEach(line=>$('p76-stat-control'+i).append(line));
+    for(let i=0;i<2;i++){
+      const area=$('p76-stat-control'+i);
+      for(const [field,max] of [['fouls',5],['timeouts',2]]){
+        const plus=area.querySelector('[data-field="'+field+'"][data-value="1"]');
+        const count=document.createElement('span');count.id='p76-count-'+field+i;count.className='p76-stat-value';plus.closest('.line').querySelector('span').append(count);
+        area.querySelectorAll('[data-field="'+field+'"]').forEach(button=>button.onclick=()=>{
+          const delta=Number(button.dataset.value);
+          if(state.statLocks?.[field]?.[i]||state[field][i]>=max||(delta<0&&state[field][i]<=0))return;
+          change(()=>adjustStat(i,field,delta,max));
+        });
+      }
+    }
+    $('resetfouls').remove();
     $('p76-global-pause').onclick=()=>change(toggleGlobalPause);
     const timing=sectionWith('Reloj y período');
     const ordered=[shots,possession,pauseSection,statsSection,$('team-control0'),$('team-control1'),timing,teams];
