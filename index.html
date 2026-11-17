@@ -1149,7 +1149,7 @@ function change(mutator){
     const previous=JSON.parse(JSON.stringify(state));
 
     try{
-      state.seconds=remaining();
+      state.seconds=state.running?(Number.isFinite(state.mainAlarmAt)?Math.max(0,(state.mainAlarmAt-Date.now())/1000):remaining()):state.seconds;
       state.stamp=Date.now();
 
       mutator();
@@ -1651,10 +1651,11 @@ if(id){
   load();
 
   setInterval(load,1500);
-  setInterval(render,100);
+  setInterval(()=>render(),100);
 }
 </script>
-<script src="actualizacion-p76.js?v=2"></script>
+<script src="actualizacion-p76.js?v=3"></script>
 </body>
 </html>
+
 

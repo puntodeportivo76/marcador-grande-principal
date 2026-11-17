@@ -14,7 +14,7 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
 @keyframes p76Period{0%,100%{opacity:.08}50%{opacity:.58}}
 .board.p76-period-warning{animation:p76Board .8s steps(1,end) infinite}
 @keyframes p76Board{0%,100%{outline:0 solid red}50%{outline:8px solid #ff1535}}
-.p76-shot-buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.p76-shot-buttons{display:grid;grid-template-columns:1fr;gap:12px}
 .p76-shot-buttons button{width:100%;min-height:78px;font-size:22px;font-weight:900;border:2px solid white}
 #p76-shot24{background:#d7152d;color:white}#p76-shot14{background:#3bdb39;color:#041904}
 .p76-team-row{display:flex;gap:8px;align-items:center}.p76-team-row input{min-width:0;flex:1}
@@ -25,8 +25,19 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
 .p76-team-card{border:1px solid #343a42;padding:12px;border-radius:10px}.p76-team-card select{margin:0 0 10px}
 #p76-library-status{color:#ffbb7c;font-size:13px;line-height:1.5}
 .p76-auth-fields{display:grid;gap:10px;margin-top:12px}
+
+.score{width:350px;max-width:100%;margin:0 auto;padding:0 12px;border:2px solid #393939;border-radius:16px;letter-spacing:-4px;line-height:1.12;background:#000}
+.p76-score-divider{position:absolute;left:796px;top:390px;width:8px;height:220px;background:#ff6500;border-radius:4px;z-index:3}
+#p76-global-pause{width:100%;min-height:78px;font-size:24px;font-weight:900;background:#d7152d;color:white;border:2px solid white}
+#p76-global-pause.paused{background:#3bdb39;color:#041904}
+#p76-global-note{font-size:13px;color:#b9c7d6;margin:12px 0 0}
+.p76-stat-controls{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.p76-stat-controls>div{border:1px solid #343a42;border-radius:10px;padding:12px}
+.p76-stat-controls h4{margin:0 0 14px;color:#ffb369}
+@media(max-width:650px){.p76-stat-controls{grid-template-columns:1fr}}
 `;
   document.head.append(style);
+  const divider=document.createElement('div');divider.className='p76-score-divider';divider.setAttribute('aria-hidden','true');$('stage').append(divider);
   const alarm=document.createElement('div');alarm.id='p76-period-alarm';alarm.setAttribute('aria-hidden','true');document.body.append(alarm);
   const baseChange=change;
   change=function(mutator){
@@ -40,12 +51,52 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
   const previousRemaining=remaining;
   remaining=function(){
     if(state&&state.running&&Number.isFinite(state.mainAlarmAt))return Math.max(0,Math.ceil((state.mainAlarmAt-Date.now())/1000));
-    return previousRemaining();
+    return Math.ceil(previousRemaining());
   };
   function shotSet(seconds,alternate){
+    if(state.globalPause?.active)return;
     const current=state.shot.team;
     state.shot={team:alternate?(current===0?1:0):(current===null?0:current),seconds,running:true,stamp:Date.now()};
   }
+
+  function toggleGlobalPause(){
+    const now=Date.now();
+    if(state.globalPause?.active){
+      const pause=state.globalPause;
+      state.running=!!pause.mainWasRunning&&state.seconds>0;
+      state.stamp=now;
+      state.mainAlarmAt=state.running?now+state.seconds*1000:null;
+      state.shot={...state.shot,running:!!pause.shotWasRunning&&state.shot.team!==null&&state.shot.seconds>0,stamp:now};
+      state.globalPause=null;
+    }else{
+      const mainWasRunning=state.running;
+      const shotWasRunning=state.shot.running&&state.shot.team!==null&&shotRemaining()>0;
+      const deadline=state.mainAlarmAt||state.stamp+state.seconds*1000;
+      state.seconds=mainWasRunning?Math.max(0,(deadline-now)/1000):state.seconds;
+      state.stamp=now;
+      state.running=false;
+      state.mainAlarmAt=null;
+      state.shot={...state.shot,seconds:shotRemaining(),running:false,stamp:now};
+      state.globalPause={active:true,mainWasRunning,shotWasRunning};
+    }
+  }
+  function syncGlobalUI(){
+    if(!state)return;
+    const paused=!!state.globalPause?.active;
+    for(const id of ['p76-shot24','p76-shot14','toggle','next'])if($(id))$(id).disabled=paused;
+    const button=$('p76-global-pause');
+    if(button){
+      button.textContent=paused?'Continuar':'Detener';
+      button.classList.toggle('paused',paused);
+      button.setAttribute('aria-pressed',String(paused));
+      $('p76-global-note').textContent=paused?'Pausa activa. Se conservan los tiempos y se bloquean Cambiar a 24 y Cambiar a 14.':'Detiene ambos relojes. Al continuar se reanudan los que estaban contando.';
+    }
+    for(let i=0;i<2;i++){
+      const score=$('s'+i);if(score){const digits=String(state.scores[i]).length;score.style.fontSize=digits>=4?'130px':digits===3?'180px':'220px';}
+      const label=$('p76-stat-team'+i);if(label)label.textContent=state.names[i];
+    }
+  }
+
   function inAlertWindow(running,end,now){return running&&now>=end&&now<end+5000;}
   function updateMainAlarm(){
     if(!state)return;
@@ -67,6 +118,7 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
       box.setAttribute('aria-label',state.names[i]+': '+(selected?value:24)+' segundos');
     }
     updateMainAlarm();
+    syncGlobalUI();
   };
 
   const drafts=[{name:'LOCAL',logo:''},{name:'VISITA',logo:''}];
@@ -187,9 +239,26 @@ body.display #p76-period-alarm.active{display:block;animation:p76Period .8s step
       try{await firebase.signIn(firebase.auth,$('p76-email').value.trim(),$('p76-password').value);$('p76-password').value='';}
       catch{$('p76-password').value='';libraryMessage('No se pudo iniciar sesión. Revisa el correo, la contraseña y los permisos de acceso.');}
     };
+
+    const pauseSection=document.createElement('section');pauseSection.className='panel wide';
+    pauseSection.innerHTML='<h3>Pausa del partido</h3><button id="p76-global-pause" aria-pressed="false">Detener</button><p id="p76-global-note"></p>';
+    const statsSection=document.createElement('section');statsSection.className='panel wide';
+    statsSection.innerHTML='<h3>Faltas y tiempos</h3><div class="p76-stat-controls"><div id="p76-stat-control0"><h4 id="p76-stat-team0">LOCAL</h4></div><div id="p76-stat-control1"><h4 id="p76-stat-team1">VISITA</h4></div></div>';
+    /* Mover los controles conservando todos sus eventos. */
+    $('controls').append(pauseSection,statsSection);
+    for(let i=0;i<2;i++)$('team-control'+i).querySelectorAll('.line').forEach(line=>$('p76-stat-control'+i).append(line));
+    $('p76-global-pause').onclick=()=>change(toggleGlobalPause);
+    const timing=sectionWith('Reloj y período');
+    const ordered=[shots,possession,pauseSection,statsSection,$('team-control0'),$('team-control1'),timing,teams];
+    ordered.filter(Boolean).forEach(section=>$('controls').append(section));
+    syncGlobalUI();
+
     updateCatalog();connectCatalog();
   }
+  const baseRender=render;
+  render=function(){baseRender();syncGlobalUI();};
   const baseBuild=buildControls;
   buildControls=function(){baseBuild();installUI();};
   installUI();render();
 })();
+
